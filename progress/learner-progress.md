@@ -5,9 +5,9 @@
 
 ## Learner profile
 - Name: [unset]
-- Preferred learning style: [unset — set during /start: Socratic | Lecture+checkpoints | Build-along]
-- Started: [date]
-- Last session: [date]
+- Preferred learning style: Socratic
+- Started: 2026-09-04
+- Last session: 2026-09-04
 
 ## Module status
 
