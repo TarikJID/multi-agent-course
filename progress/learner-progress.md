@@ -13,7 +13,7 @@
 
 | Module | Status | Notes / weak spots |
 |--------|--------|--------------------|
-| 01 — Agents, ReAct & the Harness | not started | |
+| 01 — Agents, ReAct & the Harness | completed | Quiz 4/4. Minor nudge on Q2: "observation" is its own named step, not folded into "take action." Strong grasp of agent def, loop, arch levels, ReAct, harness. |
 | 02 — Skills, Subagents & Multi-Agent Orchestration | not started | |
 | 03 — Agentic RAG, Semantic Cache & Knowledge Graphs | not started | |
 | 04 — Evaluation & Guardrails | not started | |
@@ -23,7 +23,7 @@
 Status values: not started · in progress · completed · needs review
 
 ## Weak spots to revisit
-- [none yet]
+- [none significant] Module 01 Q2: remember "observation" (feeding tool result back into context) as its own explicit loop step.
 
 ## Next step
-- Begin Module 01.
+- Do the Module 01 hands-on exercise (`exercises.md`), then begin Module 02.
