@@ -7,7 +7,15 @@
 - Name: [unset]
 - Preferred learning style: Socratic
 - Started: 2026-09-04
-- Last session: 2026-09-04
+- Last session: 2026-09-05
+
+## Companion cheat sheet
+- Artifact: "Bootcamp Blueprint" — https://claude.ai/code/artifact/e02cd05e-da98-4cb3-9cbf-e82e66bee081
+- **Claude: update this artifact at the end of every teaching session** — add new concept
+  cards + 2-4 condensed Q&A field notes to the relevant sheet (or add a new sheet section
+  for a newly started module), append one row to its Revision Log table, and bump the
+  masthead's session count / last-revision date. Republish to the same URL above (do not
+  create a new artifact).
 
 ## Module status
 
