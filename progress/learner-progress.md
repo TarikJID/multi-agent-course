@@ -37,6 +37,19 @@ Status values: not started · in progress · completed · needs review
 - Module 02: exact file location for subagent definitions (`.claude/agents/<name>.md`) didn't stick on first or second try — worth a quick recall check next session before moving on.
 - Learner explicitly flagged low confidence on Module 02 despite passing the quiz 5/5 — treat that as signal, not just the score. Requested a *fresh, non-reused* quiz next session (not quiz.md verbatim, since they've now seen those questions) to properly test retention.
 
+## Side project: "Teacher Claude"
+- Learner's own case study (an agent that takes a topic/exam, researches the domains,
+  and builds a course + exercises from it) — originally used as a hypothetical for
+  Module 01's exercises, now upgraded to an **actual side project** we build for real,
+  using each module's exercise as the concrete vehicle rather than one-off toy examples.
+- Planned trajectory: prototype the researcher/builder/evaluator agent team as Module 02's
+  exercise (design an agent team + write a real subagent file); revisit with Agentic RAG
+  (Module 03) for real knowledge retrieval instead of live search each time; revisit with
+  Evaluation & Guardrails (Module 04) to turn the "good enough per domain" checklist from
+  Module 01 into an actual automated check.
+- **Claude: when starting Module 02's exercise next session, use this project as the
+  concrete example** unless the learner says otherwise.
+
 ## Next step
 - Start next session with a freshly-generated Module 02 quiz (from lesson.md/key-concepts.md, not quiz.md) to verify confidence before moving on.
-- Then do Module 02's hands-on exercise (design an agent team + write a real subagent file) if the fresh quiz goes well.
+- Then do Module 02's hands-on exercise (design an agent team + write a real subagent file) using "Teacher Claude" as the concrete project, if the fresh quiz goes well.
