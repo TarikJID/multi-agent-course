@@ -21,8 +21,8 @@
 
 | Module | Status | Notes / weak spots |
 |--------|--------|--------------------|
-| 01 — Agents, ReAct & the Harness | completed | Quiz 4/4. Minor nudge on Q2: "observation" is its own named step, not folded into "take action." Strong grasp of agent def, loop, arch levels, ReAct, harness. |
-| 02 — Skills, Subagents & Multi-Agent Orchestration | not started | |
+| 01 — Agents, ReAct & the Harness | completed | Quiz 4/4 + both exercises done. Recurring pattern to watch: folds "observation" into surrounding actions instead of naming it explicitly (showed up in quiz Q2 and again in Exercise 2 loop trace); also initially conflated "this sub-step is done" with "the whole task is done" (domain-listing ≠ finished; one domain passing its checklist ≠ overall stop_reason) — self-corrected once flagged both times. Strong grasp of agent def, loop, arch levels, ReAct, harness, and defining "good enough" as an explicit checklist rather than a vibe. |
+| 02 — Skills, Subagents & Multi-Agent Orchestration | in progress | |
 | 03 — Agentic RAG, Semantic Cache & Knowledge Graphs | not started | |
 | 04 — Evaluation & Guardrails | not started | |
 | 05 — Multi-Agent Systems (MCP · A2A · ADK) | not started | |
@@ -31,7 +31,8 @@
 Status values: not started · in progress · completed · needs review
 
 ## Weak spots to revisit
-- [none significant] Module 01 Q2: remember "observation" (feeding tool result back into context) as its own explicit loop step.
+- Naming "observation" as its own explicit loop step, rather than folding it into the surrounding action — recurred twice in Module 01, self-corrected both times when flagged. Watch for it again in Module 02's multi-agent traces.
+- Distinguishing "a sub-step/part is done" from "the whole task is done" (premature stop_reason). Same self-correction pattern as above.
 
 ## Next step
-- Do the Module 01 hands-on exercise (`exercises.md`), then begin Module 02.
+- Continue Module 02 (Skills, Subagents & Multi-Agent Orchestration).
