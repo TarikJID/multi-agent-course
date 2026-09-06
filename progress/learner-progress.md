@@ -7,7 +7,13 @@
 - Name: [unset]
 - Preferred learning style: Socratic
 - Started: 2026-09-04
-- Last session: 2026-09-05
+- Last session: 2026-09-06
+- Learner-stated accommodation: has trouble retaining precise vocabulary / exact file paths
+  (e.g. `.claude/agents/<name>.md` vs `CLAUDE.md` mixed up twice across two sessions).
+  Conceptual reasoning is consistently strong — the gap is specifically exact names/locations.
+  **Claude: give this its own emphasis** — in the cheat sheet, keep a dedicated "exact names &
+  commonly confused" reference (not just definitions), use mnemonics, and re-verify recall of
+  exact terms/paths periodically rather than assuming a past correction stuck.
 
 ## Companion cheat sheet
 - Artifact: "Bootcamp Blueprint" — https://claude.ai/code/artifact/e02cd05e-da98-4cb3-9cbf-e82e66bee081
