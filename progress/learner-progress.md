@@ -7,7 +7,7 @@
 - Name: [unset]
 - Preferred learning style: Socratic
 - Started: 2026-09-04
-- Last session: 2026-09-07
+- Last session: 2026-09-10
 - Learner-stated accommodation: has trouble retaining precise vocabulary / exact file paths
   (e.g. `.claude/agents/<name>.md` vs `CLAUDE.md` mixed up twice across two sessions).
   Conceptual reasoning is consistently strong — the gap is specifically exact names/locations.
@@ -29,7 +29,7 @@
 |--------|--------|--------------------|
 | 01 — Agents, ReAct & the Harness | completed | Quiz 4/4 + both exercises done. Recurring pattern to watch: folds "observation" into surrounding actions instead of naming it explicitly (showed up in quiz Q2 and again in Exercise 2 loop trace); also initially conflated "this sub-step is done" with "the whole task is done" (domain-listing ≠ finished; one domain passing its checklist ≠ overall stop_reason) — self-corrected once flagged both times. Strong grasp of agent def, loop, arch levels, ReAct, harness, and defining "good enough" as an explicit checklist rather than a vibe. |
 | 02 — Skills, Subagents & Multi-Agent Orchestration | completed | All 7 concepts taught + fresh non-reused quiz (5/5, all correct on substance, no retries needed — confidence concern from session 1 resolved) + both exercises done via the "Teacher Claude" project (agent-team design incl. self-caught parallelization opportunity within the researcher role; wrote a real `.claude/agents/domain-researcher.md` file, iterated twice on feedback, then independently caught and removed its own prompt-drift risk in the final review). Also independently generalized "prompt vs. tool access" as two separate layers (harness/permissions vs. system prompt text) beyond what the lesson states. |
-| 03 — Agentic RAG, Semantic Cache & Knowledge Graphs | in progress | |
+| 03 — Agentic RAG, Semantic Cache & Knowledge Graphs | in progress | Concepts 1–4 taught and checked (agentic vs. fixed RAG, query routing, vector embeddings/chunking, grounded generation with citations) — all solid. On the Concept 4 check, initially framed grounding as guarding against training-data *bias/mood coloring* (e.g. "20°C" → model adds "beautiful") rather than the sharper point: ungrounded generation can *fabricate outright*, not just editorialize — corrected once, seemed to land. Did a warm-up (2026-09-10) recapping 1–4 and previewing Concept 5 (semantic caching): asked why high similarity alone isn't enough to trust a cache hit, answered with a **different** real failure mode (embedding similarity missing a disambiguating term — "Paris, Texas" vs. "Paris, France") instead of the one this module targets (a stale-answer / time-sensitivity risk despite a perfect match). Acknowledged as valid but redirected; not yet re-checked with the module's actual framing — worth confirming this lands when Concept 5 is taught in full. |
 | 04 — Evaluation & Guardrails | not started | |
 | 05 — Multi-Agent Systems (MCP · A2A · ADK) | not started | |
 | 06 — Voice Agents | not started | |
@@ -62,4 +62,10 @@ Status values: not started · in progress · completed · needs review
   do that first real run** — don't wait for the learner to ask again.
 
 ## Next step
-- Begin Module 03 (Agentic RAG, Semantic Cache & Knowledge Graphs).
+- Resume Module 03 mid-lesson via `teach-module`: Concepts 1–4 are done (last covered was
+  "grounded generation with citations"). Start at **Concept 5 — Semantic caching (and the
+  time-sensitivity guard)**, then continue through Concept 6 (Knowledge Graphs / Text-to-Cypher)
+  and Concept 7 (hybrid retrieval + LLM-as-judge). A warm-up already previewed Concept 5's
+  core trap (similarity ≠ trustworthy-right-now) on 2026-09-10 — re-confirm it lands when taught
+  properly, since the learner's own first answer reached for a different (also valid) failure
+  mode instead.
