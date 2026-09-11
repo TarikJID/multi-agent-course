@@ -51,6 +51,11 @@ Status values: not started · in progress · completed · needs review
 - Module 03 quiz (session 005), Q5: on a compound question ("what is the judge doing, AND why not trust whichever responded first"), answered only the first half and skipped the second until hinted. Watch for this pattern on future two-part questions — flag explicitly if it recurs.
 
 ## Side project: "Teacher Claude"
+- **Design doc:** `teacher-claude/DESIGN.md` — created session 005. This is the accumulating
+  buildable spec (architecture, agent-file status, retrieval/cache decisions, decisions log).
+  **Claude: after any exercise that produces a Teacher Claude design decision, add it here
+  verbatim, not just as a narrative summary** — this file's job is to stay reusable for the
+  actual build.
 - Learner's own case study (an agent that takes a topic/exam, researches the domains, and builds
   a course + exercises from it) — originally a Module 01 hypothetical, now an **actual side
   project** built for real, using each module's exercise as the concrete vehicle.
