@@ -35,7 +35,7 @@
 |--------|--------|--------------------|
 | 01 — Agents, ReAct & the Harness | completed | Quiz 4/4 + both exercises done. Recurring pattern to watch: folds "observation" into surrounding actions instead of naming it explicitly (showed up in quiz Q2 and again in Exercise 2 loop trace); also initially conflated "this sub-step is done" with "the whole task is done" (domain-listing ≠ finished; one domain passing its checklist ≠ overall stop_reason) — self-corrected once flagged both times. Strong grasp of agent def, loop, arch levels, ReAct, harness, and defining "good enough" as an explicit checklist rather than a vibe. |
 | 02 — Skills, Subagents & Multi-Agent Orchestration | completed | All 7 concepts taught + fresh non-reused quiz (5/5, all correct on substance, no retries needed — confidence concern from session 1 resolved) + both exercises done via the "Teacher Claude" project (agent-team design incl. self-caught parallelization opportunity within the researcher role; wrote a real `.claude/agents/domain-researcher.md` file, iterated twice on feedback, then independently caught and removed its own prompt-drift risk in the final review). Also independently generalized "prompt vs. tool access" as two separate layers (harness/permissions vs. system prompt text) beyond what the lesson states. |
-| 03 — Agentic RAG, Semantic Cache & Knowledge Graphs | completed | All 7 concepts taught + quiz 5/5 (2 items needed one hint each, both self-corrected immediately — see weak spots). Exercises still pending. Independently derived the time-sensitivity failure mode and a recursive hybrid-routing architecture before either was formally introduced; pushed a follow-up that surfaced a real limitation in the LLM-as-judge's grounding (verified against this repo's actual code). |
+| 03 — Agentic RAG, Semantic Cache & Knowledge Graphs | completed (exercises in progress) | All 7 concepts taught + quiz 5/5 (2 items needed one hint each, both self-corrected immediately — see weak spots). Exercise 1 (semantic cache design) done in full, incl. stretch question — see `teacher-claude/DESIGN.md`. Exercise 2 (vector RAG vs. Knowledge Graph) not yet started — resume at Step 1, Query A ("Explain how semantic caching works."). Independently derived the time-sensitivity failure mode and a recursive hybrid-routing architecture before either was formally introduced; pushed a follow-up that surfaced a real limitation in the LLM-as-judge's grounding (verified against this repo's actual code). |
 | 04 — Evaluation & Guardrails | not started | |
 | 05 — Multi-Agent Systems (MCP · A2A · ADK) | not started | |
 | 06 — Voice Agents | not started | |
@@ -75,7 +75,9 @@ Status values: not started · in progress · completed · needs review
   do that first real run** — don't wait for the learner to ask again.
 
 ## Next step
-- Do Module 03's exercises (`exercises.md`) — quiz is done (5/5). Then begin Module 04
+- Resume Module 03 Exercise 2 (vector RAG vs. Knowledge Graph for Teacher Claude) at **Step 1**:
+  Query A = "Explain how semantic caching works." (Vector RAG or Knowledge Graph, and why?).
+  Exercise 1 is fully done (see `teacher-claude/DESIGN.md`). After Exercise 2, begin Module 04
   (Evaluation & Guardrails), which the learner has already been told will formalize the
   grounded-generation enforcement gap and the LLM-as-judge's ground-truth limitation surfaced
   in session 005.
