@@ -7,7 +7,7 @@
 - Name: [unset]
 - Preferred learning style: Socratic
 - Started: 2026-09-04
-- Last session: 2026-09-07
+- Last session: 2026-09-12
 - Learner-stated accommodation: has trouble retaining precise vocabulary / exact file paths
   (e.g. `.claude/agents/<name>.md` vs `CLAUDE.md` mixed up twice across two sessions).
   Conceptual reasoning is consistently strong — the gap is specifically exact names/locations.
@@ -29,7 +29,7 @@
 |--------|--------|--------------------|
 | 01 — Agents, ReAct & the Harness | completed | Quiz 4/4 + both exercises done. Recurring pattern to watch: folds "observation" into surrounding actions instead of naming it explicitly (showed up in quiz Q2 and again in Exercise 2 loop trace); also initially conflated "this sub-step is done" with "the whole task is done" (domain-listing ≠ finished; one domain passing its checklist ≠ overall stop_reason) — self-corrected once flagged both times. Strong grasp of agent def, loop, arch levels, ReAct, harness, and defining "good enough" as an explicit checklist rather than a vibe. |
 | 02 — Skills, Subagents & Multi-Agent Orchestration | completed | All 7 concepts taught + fresh non-reused quiz (5/5, all correct on substance, no retries needed — confidence concern from session 1 resolved) + both exercises done via the "Teacher Claude" project (agent-team design incl. self-caught parallelization opportunity within the researcher role; wrote a real `.claude/agents/domain-researcher.md` file, iterated twice on feedback, then independently caught and removed its own prompt-drift risk in the final review). Also independently generalized "prompt vs. tool access" as two separate layers (harness/permissions vs. system prompt text) beyond what the lesson states. |
-| 03 — Agentic RAG, Semantic Cache & Knowledge Graphs | in progress | |
+| 03 — Agentic RAG, Semantic Cache & Knowledge Graphs | in progress | Lesson + quiz done. Quiz retaken fresh in this session: 5/5, correct on first attempt for every question, no hints needed (agentic routing incl. "whether not just where" to retrieve; time-sensitivity guard bypasses cache regardless of similarity; KG/Text-to-Cypher for precise count/relationship queries vs. vector RAG for fuzzy semantic match; grounding+citations as the structural version of Module 01's "never guess, document only"; LLM-as-judge scores both answers on explicit criteria rather than trusting whichever responded first). Learner reports the exercise was started in a separate claude.ai session (work computer) — that session's exact progress isn't visible here (no shared state across sessions unless committed to this repo), so treat the exercise as unconfirmed/not-yet-verified in this tracker until resumed and reviewed here. |
 | 04 — Evaluation & Guardrails | not started | |
 | 05 — Multi-Agent Systems (MCP · A2A · ADK) | not started | |
 | 06 — Voice Agents | not started | |
@@ -62,4 +62,5 @@ Status values: not started · in progress · completed · needs review
   do that first real run** — don't wait for the learner to ask again.
 
 ## Next step
-- Begin Module 03 (Agentic RAG, Semantic Cache & Knowledge Graphs).
+- Resume/complete Module 03's exercise (started on a separate work-computer session; not yet
+  verified in this tracker — confirm where they left off before continuing rather than assuming).
