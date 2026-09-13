@@ -7,7 +7,7 @@
 - Name: [unset]
 - Preferred learning style: Socratic
 - Started: 2026-09-04
-- Last session: 2026-09-12
+- Last session: 2026-09-13
 - Learner-stated accommodation: has trouble retaining precise vocabulary / exact file paths
   (e.g. `.claude/agents/<name>.md` vs `CLAUDE.md` mixed up twice across two sessions).
   Conceptual reasoning is consistently strong — the gap is specifically exact names/locations.
@@ -29,7 +29,7 @@
 |--------|--------|--------------------|
 | 01 — Agents, ReAct & the Harness | completed | Quiz 4/4 + both exercises done. Recurring pattern to watch: folds "observation" into surrounding actions instead of naming it explicitly (showed up in quiz Q2 and again in Exercise 2 loop trace); also initially conflated "this sub-step is done" with "the whole task is done" (domain-listing ≠ finished; one domain passing its checklist ≠ overall stop_reason) — self-corrected once flagged both times. Strong grasp of agent def, loop, arch levels, ReAct, harness, and defining "good enough" as an explicit checklist rather than a vibe. |
 | 02 — Skills, Subagents & Multi-Agent Orchestration | completed | All 7 concepts taught + fresh non-reused quiz (5/5, all correct on substance, no retries needed — confidence concern from session 1 resolved) + both exercises done via the "Teacher Claude" project (agent-team design incl. self-caught parallelization opportunity within the researcher role; wrote a real `.claude/agents/domain-researcher.md` file, iterated twice on feedback, then independently caught and removed its own prompt-drift risk in the final review). Also independently generalized "prompt vs. tool access" as two separate layers (harness/permissions vs. system prompt text) beyond what the lesson states. |
-| 03 — Agentic RAG, Semantic Cache & Knowledge Graphs | in progress | Lesson + quiz done. Quiz retaken fresh in this session: 5/5, correct on first attempt for every question, no hints needed (agentic routing incl. "whether not just where" to retrieve; time-sensitivity guard bypasses cache regardless of similarity; KG/Text-to-Cypher for precise count/relationship queries vs. vector RAG for fuzzy semantic match; grounding+citations as the structural version of Module 01's "never guess, document only"; LLM-as-judge scores both answers on explicit criteria rather than trusting whichever responded first). Note: a separate claude.ai work-computer session reportedly covered this module too, but its state was never visible here — this session's record (quiz retaken + Exercise 1 done fresh) is the verified one going forward. Exercise 1 (semantic cache design for Teacher Claude) **completed in this session**, including the optional stretch question: 3 labeled example queries (fundamentals=cacheable, current model list=live, ReAct definition=cacheable); generalized the time-sensitivity rule *unprompted* to be topic-based rather than pure-keyword-based (correctly noted a user might ask about model support without saying "current" — the guard has to flag by subject category, not just wording — a genuinely strong extension beyond the lesson); justified biasing toward false-cache-miss over false-cache-hit for an exam-prep tool (asymmetric cost: stale-wrong knowledge risks the exam, extra latency doesn't); on the stretch (does a reworked domain's old cache entry survive?), correctly split false vs. incomplete rather than treating all evaluator-rejections the same — needed one nudge to see that *any* rework verdict should pull the entry from serving live traffic immediately, with the false/incomplete distinction mattering more for whether it's kept as a fallback than for whether it stays live. Exercise 2 (vector RAG vs. knowledge graph, two Teacher Claude queries) **started, not yet answered** — that's the resume point. |
+| 03 — Agentic RAG, Semantic Cache & Knowledge Graphs | completed | Lesson + quiz done. Quiz retaken fresh in this session: 5/5, correct on first attempt for every question, no hints needed (agentic routing incl. "whether not just where" to retrieve; time-sensitivity guard bypasses cache regardless of similarity; KG/Text-to-Cypher for precise count/relationship queries vs. vector RAG for fuzzy semantic match; grounding+citations as the structural version of Module 01's "never guess, document only"; LLM-as-judge scores both answers on explicit criteria rather than trusting whichever responded first). Note: a separate claude.ai work-computer session reportedly covered this module too, but its state was never visible here — this session's record (quiz retaken + Exercise 1 done fresh) is the verified one going forward. Exercise 1 (semantic cache design for Teacher Claude) **completed in this session**, including the optional stretch question: 3 labeled example queries (fundamentals=cacheable, current model list=live, ReAct definition=cacheable); generalized the time-sensitivity rule *unprompted* to be topic-based rather than pure-keyword-based (correctly noted a user might ask about model support without saying "current" — the guard has to flag by subject category, not just wording — a genuinely strong extension beyond the lesson); justified biasing toward false-cache-miss over false-cache-hit for an exam-prep tool (asymmetric cost: stale-wrong knowledge risks the exam, extra latency doesn't); on the stretch (does a reworked domain's old cache entry survive?), correctly split false vs. incomplete rather than treating all evaluator-rejections the same — needed one nudge to see that *any* rework verdict should pull the entry from serving live traffic immediately, with the false/incomplete distinction mattering more for whether it's kept as a fallback than for whether it stays live. Exercise 2 (vector RAG vs. knowledge graph) also **completed with its stretch**: correct backend calls for both queries with sound justification; named the `PREREQUISITE_OF` edge and recognised direction matters; on the stretch, correctly identified that a single vector search can't chain a retrieved fact into a second lookup. **Notable:** pushed back hard on my overclaim that vector search "could never" answer a multi-hop query — correctly argued a chunk *could* contain the full chain, forcing a more precise formulation (retrieval returns existing text and never derives new facts; pre-computing every transitive closure doesn't scale). Excellent critical-thinking signal — did not accept an authoritative-sounding but sloppy claim. Gap surfaced and filled: had no recall of Concept 3 (chunking/embedding) and said so rather than bluffing — re-taught briefly, then applied it correctly (chunk lesson.md by concept) and independently asked why one would ever *not* embed a chunk, which opened the answer-key-exclusion point. Also asked two good unprompted questions: whether vector search and KG are both just RAG with different data structures (yes — umbrella vs. backends), and how KGs are physically stored (answered from general knowledge, flagged as beyond the kit's content). |
 | 04 — Evaluation & Guardrails | not started | |
 | 05 — Multi-Agent Systems (MCP · A2A · ADK) | not started | |
 | 06 — Voice Agents | not started | |
@@ -42,26 +42,42 @@ Status values: not started · in progress · completed · needs review
 - Isolated context = "where the noise lives," not "shorter prompt" — resolved, answered correctly unprompted on the fresh Module 02 quiz.
 - **Persistent, not yet resolved:** exact location of subagent definitions (`.claude/agents/<name>.md` vs `CLAUDE.md`) has now been wrong or unsure **three separate times** across two sessions (quiz.md Q5, the fresh quiz's Q5, both needing the same correction). This is the one item from the "vocabulary/exact-names" accommodation that hasn't budged yet despite repeated correction — give it real priority in the cheat sheet's "exact names" section (mnemonic already given: "one file, one hire") and check it again next session rather than assuming it's fixed.
 
-## Side project: "Teacher Claude"
-- Learner's own case study (an agent that takes a topic/exam, researches the domains, and builds
-  a course + exercises from it) — originally a Module 01 hypothetical, now an **actual side
-  project** built for real, using each module's exercise as the concrete vehicle.
-- Progress so far: full orchestrator design done (domain-mapper → evaluator → N parallel
-  domain-researchers → evaluator → course-builder → evaluator), including the learner catching
-  their own "one researcher role, many parallel instances" refinement. One real agent file
-  written and iterated: `.claude/agents/domain-researcher.md`.
-- **Build plan agreed with the learner** (they asked directly "when do I actually build this for
-  real?"): don't wait for all 6 modules. Once the remaining agent files (`domain-mapper`,
-  `evaluator`, `course-builder`) are written the same way, do a real first end-to-end run using
-  live web search — as its own dedicated step, not gated on course completion. Module 03
-  (Agentic RAG) and Module 04 (Evaluation & Guardrails) then come back and *upgrade* specific
-  pieces (a real knowledge base instead of live search; the evaluator's "good enough" checklist
-  becoming an actual automated guardrail) rather than blocking the first working version.
-- **Claude: use this project as the concrete example for future module exercises by default,
-  and proactively flag when a natural moment arrives to write the remaining 3 agent files and
-  do that first real run** — don't wait for the learner to ask again.
+## Side project: "Certification Trainer" (renamed from "Teacher Claude")
+- Learner's own case study (an agent that takes a certification, researches its domains, and
+  builds a course from it) — originally a Module 01 hypothetical, now a **real project with its
+  own repo**: https://github.com/TarikJID/certification-trainer
+- **Repo decision (2026-09-13):** kept separate from `multi-agent-course` rather than a folder
+  inside it — it's a real product, not teaching material, and a dedicated repo makes git the
+  single source of truth across sessions/machines (this was prompted by the earlier work-computer
+  session whose `domain-researcher.md` never reached any repo and is now lost).
+- **Status: pipeline complete and pushed.** All four agent definitions written this session,
+  each specced by the learner first and then drafted/iterated together:
+  - `.claude/agents/domain-mapper.md` — fetches official cert page, returns structured domains.
+  - `.claude/agents/evaluator.md` — checks each stage against that stage's own "Done when"
+    checklist. **Learner caught the key design tension themselves**: adding web-verification
+    risked hardcoding "the official cert page" and destroying reusability across stages.
+    Resolved by naming the *relationship* ("verify against whatever source the checklist
+    designates") instead of the source.
+  - `.claude/agents/domain-researcher.md` — N parallel instances, one per domain; prerequisite
+    tracing capped at one level; source-quality and unsourced-disclosure promoted into the
+    checklist so the evaluator can actually catch violations.
+  - `.claude/agents/course-builder.md` — assembles the course to disk; deliberately has **no web
+    tools** so "use only provided material" is enforced by tool scope, not prompt text.
+  - `CLAUDE.md` — orchestrator: user-agreement phase, the pipeline, per-stage retry cap (2) with
+    escalation, partial re-run on parallel failures, file-path passing to protect context.
+- **Bug caught in review:** the orchestrator's file-passing design was unimplementable — mapper
+  and researcher had no `Write`, evaluator had no `Read`. Fixed. Good illustration for the
+  learner of their own "prompt layer vs. tool layer" insight failing in the other direction.
+- **Next milestone:** the real first end-to-end run against an actual certification. Not yet
+  done. After that, a separate **tutor agent** (decided this session to keep teaching separate
+  from building — the tutor is a separate entry point, not a 7th pipeline step).
+- **Claude: keep using this project as the concrete example for module exercises, and
+  proactively push toward that first real run** — it's the agreed milestone and everything is
+  now in place for it.
 
 ## Next step
-- Resume Module 03's Exercise 2 (vector RAG vs. knowledge graph) mid-way: Query A ("Explain how
-  semantic caching works.") and Query B ("Which exam domains must a student master before
-  attempting the Guardrails domain?") have been posed but not yet answered.
+Two live threads — learner's choice:
+1. **Module 04 (Evaluation & Guardrails)** — note its teaching files (`study-material/`) don't
+   exist yet and need authoring before it can be taught.
+2. **Certification Trainer: the first real end-to-end run.** Everything needed is now written
+   and pushed; this is the agreed milestone and is overdue relative to the plan.
