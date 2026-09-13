@@ -44,11 +44,10 @@ live in that module's `study-material/` subfolder, alongside the module's suppor
 files and pull in the supporting material for hands-on work. Copy `modules/_TEMPLATE/` (whose
 five files become the module's `study-material/`) when adding a new module.
 
-> Note: `Module_1_Agent_Loop`, `Module_2_Skills_Sub_Agents`, `Module_3_Agentic_RAG`,
-> `Module_5_Multi_Agents`, and `Module_6_Voice_Agents` currently have the full `study-material/`
-> set. The remaining modules so far contain only supporting material (notebooks, code, READMEs);
-> their teaching files still
-> need to be authored.
+> Note: all six modules now have the full `study-material/` set. `Module_4_AI_Evaluation`'s five
+> teaching files were authored in session 006 from its `README.md` and `AI_Eval_Metrics.ipynb`;
+> they have not yet been taught or exercised with a learner, so treat them as unbattle-tested and
+> revise as you go.
 
 ## Teaching style
 
