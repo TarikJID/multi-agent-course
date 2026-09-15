@@ -99,32 +99,58 @@ Status values: not started · in progress · completed · needs review
 
 ## Next step
 
-**RESUME EXACTLY HERE.** 2026-09-15 was a brief check-in; the learner deferred the run to their
-lunch break the same day and asked to pick up at precisely this point. **Do not open with a recap
-of covered ground, and do not open with a vocabulary check** — go straight to choosing the
-certification and starting the run. The sequencing below was already agreed and does not need
-re-proposing.
+**The first real end-to-end run is now HANDED OFF to its own session.** It is not happening in
+the tutor session. On 2026-09-15 (lunch) the learner started a separate session rooted at
+`TarikJID/certification-trainer`, on the `Web enabled` environment, to run the pipeline as
+designed.
 
-**The Certification Trainer's first real end-to-end run** — agreed and recommended, not yet started.
+**Ask about the outcome of that run at the start of the next tutor session** — that is the live
+thread. What to ask for: where it broke, what `domain-mapper` returned, whether `evaluator`
+passed or reworked anything, whether the retry cap fired. Then take the findings into Module 04.
 
-Session 2026-09-14 was a short one: a cold recall check (see Weak spots) and a decision about
-sequencing. No module was taught. The learner asked which thread to take first and then went to
-sleep before the run could begin.
+**Certification chosen:** Claude Certified Architect — Foundations
+(https://anthropic-partners.skilljar.com/claude-certified-architect-foundations-certification#ccarf-prep).
+Self-referential by design: using Claude to build a course for a Claude certification.
 
-**Recommendation given, and the reasoning to carry forward:** do the Certification Trainer run
-*before* Module 04, even though Module 04's materials are ready. Module 04 is about evaluation, and
-the learner has already written an `evaluator.md` with retry caps and escalation. Running the
-pipeline first means walking into Module 04 holding a real trajectory — where the evaluator passed
-something it shouldn't have, where a retry fired, what `domain-researcher` actually produced.
-Evaluation taught against their own live failures beats evaluation taught in the abstract, and it
-also gives the untested Module 04 material something concrete to be tested against.
+**Parked thread:** Module 04 — Evaluation & Guardrails. Files ready; see module status table.
+Best taught *after* the run, holding a real trajectory.
 
-**Open question for next session:** which certification to point it at. Not yet chosen.
+## Session log — 2026-09-15 (lunch): the blocked first run
 
-**Claude, two practical notes for that run:**
-- The learner should be present. They built a **user-agreement phase** as the pipeline's first
-  step; starting the run without them bypasses the thing they designed. More importantly, the
-  value of a first run is watching *where* it breaks — that doesn't survive being summarized.
-- The Certification Trainer lives in a **separate repo**
-  (https://github.com/TarikJID/certification-trainer), which is not in this session's repository
-  scope by default. It needs to be attached (`add_repo`) and cloned before the run.
+Not a teaching session, but three things worth carrying forward.
+
+**1. The tutor session had no web access, and that blocked the pipeline.** The `Default` cloud
+environment ran at **Trusted** network access — an allowlist covering GitHub, npm and PyPI but no
+general web. Every outside domain tested came back blocked, so the cert choice was never the
+problem. Three of the four agents (`domain-mapper`, `domain-researcher`, `evaluator`) need the
+web; only `course-builder` could run, because the learner had deliberately given it no web tools.
+The agent restricted for safety was the only one immune to the outage.
+
+**Fixed during the session.** The learner edited the environment to **Full** network access and
+renamed it `Web enabled` (`env_01Ps6PQcbUzwzN7xmkQxciRd`) — the rename being the way to tell it
+apart from a second, identically-named environment. **The change applied to the already-running
+session; no restart was needed.** (Claude had predicted a new session would be required. It was
+not. Don't repeat that claim.)
+
+**2. The learner asked for an ELI5 and it was warranted.** The first explanation of the blocker
+was too compressed and leaned on a clever line rather than the mechanism. A sealed-room analogy
+(four workers, three need to go out and look things up, the door is locked) landed immediately.
+Signal to keep: they say plainly when an explanation hasn't worked, rather than nodding along.
+Treat that as reliable.
+
+**3. Identity collision showed up for real, and settled where the run happens.** Running the
+pipeline in the tutor session would have put two conflicting `CLAUDE.md` identities in one place
+("you are the tutor" / "you are the orchestrator"), and the four agent definitions would not have
+loaded, since they live in the other repo. Claude would have ended up doing the work the
+orchestrator explicitly forbids it to do. Hence the separate session.
+
+**Teaching opportunity not yet used:** this is a live instance of the **context isolation** point
+the learner had not reached unprompted on 2026-09-14 (see Weak spots). It was explained here, not
+elicited. When the run is discussed next session, come back to it *through what actually
+happened* — why the pipeline needed its own session, its own context, its own identity — rather
+than asking the concept cold.
+
+**Also worth a cheat-sheet card eventually:** the environment's network policy is part of the
+harness in the Module 01 sense — it constrains what the loop can do, independently of any prompt.
+That is the same prompt-layer vs. tool-layer split the learner generalised in Module 02, one level
+further out. Not yet added to the artifact.
