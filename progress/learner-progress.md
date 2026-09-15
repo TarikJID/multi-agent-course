@@ -7,13 +7,18 @@
 - Name: [unset]
 - Preferred learning style: Socratic
 - Started: 2026-09-04
-- Last session: 2026-09-14
+- Last session: 2026-09-15
 - Learner-stated accommodation: has trouble retaining precise vocabulary / exact file paths
   (e.g. `.claude/agents/<name>.md` vs `CLAUDE.md` mixed up twice across two sessions).
   Conceptual reasoning is consistently strong — the gap is specifically exact names/locations.
   **Claude: give this its own emphasis** — in the cheat sheet, keep a dedicated "exact names &
-  commonly confused" reference (not just definitions), use mnemonics, and re-verify recall of
-  exact terms/paths periodically rather than assuming a past correction stuck.
+  commonly confused" reference (not just definitions), and use mnemonics.
+  **Do NOT re-quiz the learner on terms logged as RESOLVED below.** On 2026-09-15 they pointed
+  out they had answered the subagent-path question "5 or 6 times now" and that the repetition
+  made it feel like the progress file wasn't working. They were right: the file kept recording
+  *the instruction to check* without ever letting a correct answer close the item. Trust the
+  RESOLVED entries. Only re-check a term if they actually get it wrong in the course of normal
+  work — never as an opener.
 
 ## Companion cheat sheet
 - Artifact: "Bootcamp Blueprint" — https://claude.ai/code/artifact/e02cd05e-da98-4cb3-9cbf-e82e66bee081
@@ -40,22 +45,24 @@ Status values: not started · in progress · completed · needs review
 - Naming "observation" as its own explicit loop step — resolved, did not resurface in Module 02.
 - Distinguishing "a sub-step is done" from "the whole task is done" — resolved, did not resurface.
 - Isolated context = "where the noise lives," not "shorter prompt" — resolved, answered correctly unprompted on the fresh Module 02 quiz.
-- **Subagent definition path — first clean recall (2026-09-14).** Asked cold at the start of the
-  session, the learner answered `.claude/agents/<name>.md` immediately, no hint, no hedging. This
-  is the item that had been wrong or unsure **three separate times** across two prior sessions
-  (quiz.md Q5, the fresh quiz's Q5). The "one file, one hire" mnemonic appears to have landed.
-  **Claude: do not mark this resolved yet** — one clean recall after three misses is encouraging,
-  not conclusive. Ask it cold again next session, and once more a session after that.
-- **Follow-up on the same check went deeper than asked.** Pushed on *why* it matters ("what would
-  you lose if the subagent's instructions went in `CLAUDE.md` instead?"), the learner independently
-  produced two of the three points: identity collision (the tutor prompt gets overwritten or
-  polluted) and invocation ("half tutor, half subagent waiting for instructions that would never
-  come, since there is no orchestrator above you" — their words). Missed the third, **context
+- **RESOLVED — subagent definition path (`.claude/agents/<name>.md`). Closed 2026-09-15.**
+  Clean cold recall on 2026-09-14 *and* again on 2026-09-15, after three earlier misses. On
+  2026-09-15 the learner also volunteered the conceptual split unprompted: `CLAUDE.md` = purpose
+  and rules of the whole project / orchestration; `.claude/agents/<name>.md` = one specific
+  subagent's job, tools, inputs, outputs, do's and don'ts. Mnemonic that landed: "one file, one
+  hire". Almost certainly cemented by building the Certification Trainer repo, which has exactly
+  that shape. Two clean recalls plus an unprompted conceptual account is enough. **Do not ask
+  this again.**
+- **Open (conceptual, not vocabulary): context isolation as a reason for separate agent files.**
+  On 2026-09-14, pushed on *why* the split matters, the learner independently produced identity
+  collision and invocation ("half tutor, half subagent waiting for instructions that would never
+  come, since there is no orchestrator above you" — their words) but did not reach for **context
   isolation** — that a subagent has its own context window and hands back only the conclusion, so
-  merging it into `CLAUDE.md` means all the intermediate noise lands in the parent's window. Was
-  re-taught and connected back to the already-resolved Module 02 framing ("isolated context = where
-  the noise lives"). Worth re-checking, since they had that framing right on the Module 02 quiz but
-  did not reach for it here unprompted — suggests it's recallable when cued, not yet automatic.
+  merging it into `CLAUDE.md` puts all the intermediate noise in the parent's window. They had the
+  Module 02 framing ("isolated context = where the noise lives") right on that quiz, so it is
+  recallable when cued but not yet automatic. **Do not test this with a direct question.** It will
+  come up naturally during the Certification Trainer run — the four agents exist partly for this
+  reason — so surface it there, in context.
 
 ## Side project: "Certification Trainer" (renamed from "Teacher Claude")
 - Learner's own case study (an agent that takes a certification, researches its domains, and
@@ -91,6 +98,13 @@ Status values: not started · in progress · completed · needs review
   now in place for it.
 
 ## Next step
+
+**RESUME EXACTLY HERE.** 2026-09-15 was a brief check-in; the learner deferred the run to their
+lunch break the same day and asked to pick up at precisely this point. **Do not open with a recap
+of covered ground, and do not open with a vocabulary check** — go straight to choosing the
+certification and starting the run. The sequencing below was already agreed and does not need
+re-proposing.
+
 **The Certification Trainer's first real end-to-end run** — agreed and recommended, not yet started.
 
 Session 2026-09-14 was a short one: a cold recall check (see Weak spots) and a decision about
