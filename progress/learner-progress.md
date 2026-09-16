@@ -35,7 +35,7 @@
 | 01 — Agents, ReAct & the Harness | completed | Quiz 4/4 + both exercises done. Recurring pattern to watch: folds "observation" into surrounding actions instead of naming it explicitly (showed up in quiz Q2 and again in Exercise 2 loop trace); also initially conflated "this sub-step is done" with "the whole task is done" (domain-listing ≠ finished; one domain passing its checklist ≠ overall stop_reason) — self-corrected once flagged both times. Strong grasp of agent def, loop, arch levels, ReAct, harness, and defining "good enough" as an explicit checklist rather than a vibe. |
 | 02 — Skills, Subagents & Multi-Agent Orchestration | completed | All 7 concepts taught + fresh non-reused quiz (5/5, all correct on substance, no retries needed — confidence concern from session 1 resolved) + both exercises done via the "Teacher Claude" project (agent-team design incl. self-caught parallelization opportunity within the researcher role; wrote a real `.claude/agents/domain-researcher.md` file, iterated twice on feedback, then independently caught and removed its own prompt-drift risk in the final review). Also independently generalized "prompt vs. tool access" as two separate layers (harness/permissions vs. system prompt text) beyond what the lesson states. |
 | 03 — Agentic RAG, Semantic Cache & Knowledge Graphs | completed | Lesson + quiz done. Quiz retaken fresh in this session: 5/5, correct on first attempt for every question, no hints needed (agentic routing incl. "whether not just where" to retrieve; time-sensitivity guard bypasses cache regardless of similarity; KG/Text-to-Cypher for precise count/relationship queries vs. vector RAG for fuzzy semantic match; grounding+citations as the structural version of Module 01's "never guess, document only"; LLM-as-judge scores both answers on explicit criteria rather than trusting whichever responded first). Note: a separate claude.ai work-computer session reportedly covered this module too, but its state was never visible here — this session's record (quiz retaken + Exercise 1 done fresh) is the verified one going forward. Exercise 1 (semantic cache design for Teacher Claude) **completed in this session**, including the optional stretch question: 3 labeled example queries (fundamentals=cacheable, current model list=live, ReAct definition=cacheable); generalized the time-sensitivity rule *unprompted* to be topic-based rather than pure-keyword-based (correctly noted a user might ask about model support without saying "current" — the guard has to flag by subject category, not just wording — a genuinely strong extension beyond the lesson); justified biasing toward false-cache-miss over false-cache-hit for an exam-prep tool (asymmetric cost: stale-wrong knowledge risks the exam, extra latency doesn't); on the stretch (does a reworked domain's old cache entry survive?), correctly split false vs. incomplete rather than treating all evaluator-rejections the same — needed one nudge to see that *any* rework verdict should pull the entry from serving live traffic immediately, with the false/incomplete distinction mattering more for whether it's kept as a fallback than for whether it stays live. Exercise 2 (vector RAG vs. knowledge graph) also **completed with its stretch**: correct backend calls for both queries with sound justification; named the `PREREQUISITE_OF` edge and recognised direction matters; on the stretch, correctly identified that a single vector search can't chain a retrieved fact into a second lookup. **Notable:** pushed back hard on my overclaim that vector search "could never" answer a multi-hop query — correctly argued a chunk *could* contain the full chain, forcing a more precise formulation (retrieval returns existing text and never derives new facts; pre-computing every transitive closure doesn't scale). Excellent critical-thinking signal — did not accept an authoritative-sounding but sloppy claim. Gap surfaced and filled: had no recall of Concept 3 (chunking/embedding) and said so rather than bluffing — re-taught briefly, then applied it correctly (chunk lesson.md by concept) and independently asked why one would ever *not* embed a chunk, which opened the answer-key-exclusion point. Also asked two good unprompted questions: whether vector search and KG are both just RAG with different data structures (yes — umbrella vs. backends), and how KGs are physically stored (answered from general knowledge, flagged as beyond the kit's content). |
-| 04 — Evaluation & Guardrails | not started | Teaching files **do exist** (all five, authored session 006) — a prior `Next step` note claiming they needed authoring was stale and has been corrected. Still unbattle-tested with a learner. |
+| 04 — Evaluation & Guardrails | in progress | **Concepts 1, 2, 3, 6, 7 landed well. Concepts 4 (retrieval metrics) and 5 (generation metrics) did NOT — re-teach them from scratch.** See the session log below: Claude skipped 4 and 5 entirely, taught 3 without naming its metrics, then quizzed on all three. The learner caught it twice, correctly. Quiz abandoned after Q2; do not count it. |
 | 05 — Multi-Agent Systems (MCP · A2A · ADK) | not started | |
 | 06 — Voice Agents | not started | |
 
@@ -97,23 +97,81 @@ Status values: not started · in progress · completed · needs review
   proactively push toward that first real run** — it's the agreed milestone and everything is
   now in place for it.
 
+## Session log — 2026-09-16: the run finished, and Module 04 half-landed
+
+**1. The first end-to-end run completed.** It was never a failure — it was blocked on an
+`AskUserQuestion` the learner hadn't seen. Once they granted the extra round, the pipeline ran to
+completion and shipped a full course: `courses/claude-certified-architect-foundations/`, 6 modules ×
+(lesson + exercises + quiz), ~3,880 lines, 115 concepts, none dropped. `course-builder` synthesised a
+Module 1 Foundations that wasn't in the domain map (pulling every `prerequisite`-tagged concept across
+all five research files) and sequenced by dependency rather than exam weight, explaining its reasoning
+in the outline. The evaluator also caught the build stage (`Add three missing prerequisites to course
+Module 6`). The sourcing guardrail held all the way through: the one unsourceable concept was taught
+with a visible sourcing note in the learner-facing lesson, not fabricated.
+
+**2. Two root causes found and pushed** to `TarikJID/certification-trainer` `main` (commit `57d61a4`):
+- `domain-researcher` and `domain-mapper` had `Write` but no `Read`. Invisible on the first pass (web
+  tools return content directly) but every rework round forced regenerate-from-scratch or a full paste
+  through the orchestrator's context. Most of the run's $28.78. Both now have `Read`.
+- `domain-mapper` summarised the exam guide and dropped the source. Only 3 task statements survive
+  anywhere in ~5,000 lines; `domain-map.md` has zero. Spec now requires archiving the source and
+  reproducing every task statement **verbatim**, with an auditable escape hatch.
+
+**3. Concepts the learner derived unprompted** (before being taught them): ground truth and its
+absence; that you can't fix the evaluator-regress by stacking another evaluator; that an escape hatch
+is safe exactly when using it is auditable; that a system can fail with every component behaving
+correctly. Strong session on the conceptual side.
+
+**4. TEACHING ERROR — read this before the next Module 04 session.** Claude taught Concepts 1, 2, 6, 7
+properly, gave Concept 3 only as an analogy without ever naming its metrics, and **skipped Concepts 4
+and 5 entirely** — then ran the quiz, whose Q1 and Q2 depend on exactly that material. The learner
+said "I don't feel like we've seen these concepts before" (correct) and then "we're going over these
+concepts too fast, I don't really ingest them" (also correct). Both times they were right and Claude
+was wrong. **Trust these signals immediately — they are reliable and they are not a confidence
+problem.** Diagnosis that seemed to fit: the material that landed was material the learner derived
+from their own run; Concepts 4/5 are abstract metrics for a system they don't have (no vector store,
+no index), delivered as a vocabulary list and tested immediately. Re-teach 4 and 5 slowly, anchored to
+something concrete — the module's `AI_Eval_Metrics.ipynb` has real numbers, or frame it as
+"did the researcher pull the right pages?" = Precision@K over web-search results.
+
+Partial credit worth keeping: on Q1 the learner correctly identified that no efficiency standard was
+defined to fail against (a real Module 01-flavoured insight), but missed the generalisation point.
+On the retrieval check they named MRR correctly; the "what the user experiences" half was muddled.
+
 ## Next step
 
-**The first real end-to-end run is now HANDED OFF to its own session.** It is not happening in
-the tutor session. On 2026-09-15 (lunch) the learner started a separate session rooted at
-`TarikJID/certification-trainer`, on the `Web enabled` environment, to run the pipeline as
-designed.
+**DEADLINE: the learner has a $100 claude.ai promotional credit expiring 19 Sept.** (Not API credit —
+console.anthropic.com holds only $1.55. It applies to claude.ai usage, most likely funding overage
+once a 5-hour window is exhausted.) Agreed plan, and a `send_later` reminder is armed for
+**18 Sept 07:00 UTC** carrying the pre-run checklist (`trig_019FPHLgheKC4msgYZYhRwDz`):
 
-**Ask about the outcome of that run at the start of the next tutor session** — that is the live
-thread. What to ask for: where it broke, what `domain-mapper` returned, whether `evaluator`
-passed or reworked anything, whether the retry cap fired. Then take the findings into Module 04.
+| When | What |
+|---|---|
+| 17 Sept | Implement improvements — **trajectory logging is the big one** |
+| 17 eve / 18 am | **Pilot: `domain-mapper` alone.** Cents. Proves the new verbatim-task-statement spec works |
+| 18 Sept | Full fresh run off `main` |
+| 19 Sept | **Buffer. Nothing scheduled.** Re-run day if the 18th breaks |
 
-**Certification chosen:** Claude Certified Architect — Foundations
-(https://anthropic-partners.skilljar.com/claude-certified-architect-foundations-certification#ccarf-prep).
-Self-referential by design: using Claude to build a course for a Claude certification.
+Never let the run slip to the 19th — a failure there loses the credit entirely.
 
-**Parked thread:** Module 04 — Evaluation & Guardrails. Files ready; see module status table.
-Best taught *after* the run, holding a real trajectory.
+**Improvements still to make before that run:**
+1. **Trajectory logging** — the evaluator's verdicts must be written to disk per stage. Today they
+   exist only in the run session's context; the repo holds outcomes (`Apply rework to X`) and no
+   record of *what was wrong*. This is the single highest-value change: without it the learner spends
+   $100 and gets another unauditable run.
+2. **Task-statement coverage check** — every task statement has ≥1 concept teaching it.
+3. **Source-precedence rule** in `domain-researcher.md` — official exam guide > official product docs >
+   reputable secondary, guide valid on its own, **plus a terminal rule**: if no source exists at any
+   tier, include the concept with an explicit `UNSOURCED` flag and carry it downstream. Missing sources
+   must never block. (The learner reasoned this one out: the hatch is safe because the evaluator audits
+   the *search*, not the outcome, and the search log is more work to fake than to do.)
+4. **Verify the phrasing guess.** `domain-mapper.md` says task statements are the numbered
+   *"the candidate can ..."* items. Claude guessed that convention without seeing the CCAR-F guide.
+   Check it against the real PDF — a wrong parenthetical costs a round.
+
+**Teaching thread:** finish Module 04 — Concepts 4 and 5 only, re-taught slowly and anchored to
+something concrete (see the teaching-error note in the session log). Then a fresh quiz; today's was
+abandoned at Q2 and does not count.
 
 ## Session log — 2026-09-15 (lunch): the blocked first run
 
