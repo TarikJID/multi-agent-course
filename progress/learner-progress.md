@@ -138,6 +138,168 @@ Partial credit worth keeping: on Q1 the learner correctly identified that no eff
 defined to fail against (a real Module 01-flavoured insight), but missed the generalisation point.
 On the retrieval check they named MRR correctly; the "what the user experiences" half was muddled.
 
+## Session log — 2026-09-17: build day, and a decision about what this project is
+
+**The project's purpose was settled, and it reframes everything.** The learner asked
+directly: is Certification Trainer meant to be a generic tool, or a good run on this one
+certification? Named three goals rather than two — (1) a generic product, (2) the CCAR-F
+course itself, (3) learning agent engineering. **Chosen: goal 1 primary, goal 3 as the
+reason, goal 2 as a by-product.** The deciding argument: if only the course mattered, the
+pipeline is a ~30x more expensive route than handing the guide's 240 bullets to one Claude
+session. The pipeline is only worth running if the pipeline is the point. Consequence
+adopted immediately: nothing certification-specific lives in the pipeline's own
+definitions, and the real test of genericity is a *second* certification with no answer
+key — not now, but that is the run that would prove it.
+
+**Four changes shipped to `TarikJID/certification-trainer` `main`:**
+- `7d0a9b5` Trajectory logging. `evaluator` has `Write`, records a verdict file per stage
+  per round at `runs/<cert>/evaluations/<agent>-<unit>-round-<n>.md`, listing every
+  checklist item with an evidence column — passes included, since a file recording only
+  failures is no evidence the rest was examined. Unverifiable items go in a `Not checked`
+  section, never counted as passes. Returns only verdict + path + one line.
+- `43f53c5` The live integrity check, built and then cut (see below).
+- `7c031fb` + `275efec` Coverage. The exam guide's task statements — and the bullets
+  beneath them — are now the coverage target, flowing mapper → researcher → builder, with
+  a bullet-to-lesson table required in the outline. Source precedence added, with the exam
+  guide itself as tier 1, plus the terminal rule: no source at any tier means the concept
+  is still taught, flagged `UNSOURCED`, with a `Searched:` record. Missing sources never
+  block and never cause an omission.
+- `710fa61` Certification-agnostic hygiene.
+
+**The exam guide was extracted directly this session** (pure-python zlib + ToUnicode CMap
+decoding, since no pdf library was installable). Findings: **30 task statements, 240
+`Knowledge of:`/`Skills in:` bullets**, weights 27/18/20/20/15. Two corrections came out of
+it: Claude had guessed task statements read "the candidate can ..." — CCAR-F actually uses
+`Task Statement N.M:` plus an imperative phrase — and the bullets, not the statement lines,
+are the real coverage target. Stored at `reference/ccar-f-exam-guide.md`, deliberately
+outside `runs/`, as a **test fixture** for grading runs. The mapper is told never to read
+from `reference/`, and the file lists its own extraction fingerprints so a mapper that
+copies it can be caught. The first run's mapper got the weightings exactly right.
+
+**A control was built, then removed on the learner's call.** An integrity check —
+`git status` after each evaluation to catch the evaluator editing the work it judges. The
+learner asked whether it was overkill and what it might break. It was: it guarded a failure
+that has never occurred, cost a plausible false halt on an expensive run, and put the most
+complex procedure in the file into the orchestrator, the one component whose rules nothing
+enforces. Committing between stages already records everything, so `git log -p runs/`
+detects the same thing afterwards at no runtime cost. Removed. **Keep this as the reference
+case for "cut it" being the right engineering call** — the learner was right to push, and
+asked for a recommendation with a confidence level, which is a good habit to keep feeding.
+
+**Three catches by the learner, all the same species: what happens when two things run at
+once.** (1) The verdict filename did not identify which agent or which domain — fixed to
+`<agent>-<unit>-round-<n>`. (2) The first integrity check would have fired on innocent work,
+because a researcher writing its own file and a rogue evaluator edit look identical in a
+diff. (3) The fix for that was still wrong: researchers run *in parallel*, so "the evaluator
+is the only thing running" is false during the fan-out. Claude had over-claimed twice on the
+same point and had to drop the identification framing entirely — the check never identified
+anyone, it only ever detected that something changed which nobody was assigned to change.
+
+**Teaching note.** One "I don't understand the fix" and one "I don't understand" in
+sequence, on the integrity check. The hotel-corridor analogy failed, and the learner killed
+it with the right question ("what tells me it's not cleaner B?"). What worked was dropping
+the analogy, admitting the over-claim, and stating the mechanism plainly in four lines.
+**Pattern worth keeping: when an analogy is challenged on its internals, the analogy is
+usually wrong, not the learner.**
+
+## Next step
+
+**Project purpose (decided 2026-09-17): Certification Trainer is a GENERIC tool.** It must
+work on any certification. Learning agent engineering is why it is being built this way;
+the CCAR-F course is a by-product, not the objective. Nothing certification-specific goes
+in the pipeline's definitions. Treat this as settled unless the learner reopens it.
+
+**DEADLINE: the $100 claude.ai promotional credit expires 19 Sept.** A `send_later` reminder
+is armed for **18 Sept 07:00 UTC** carrying the pre-run checklist
+(`trig_019FPHLgheKC4msgYZYhRwDz`).
+
+| When | What | Status |
+|---|---|---|
+| 17 Sept | Implement the improvements | **done — 4 commits on `main`** |
+| 17 eve / 18 am | **Pilot: `domain-mapper` alone** | **not yet run — learner will launch** |
+| 18 Sept | Full fresh run off `main` | pending |
+| 19 Sept | **Buffer. Nothing scheduled.** | — |
+
+Never let the run slip to the 19th.
+
+**How to grade the pilot.** Diff the mapper's `runs/<cert>/domain-map.md` against
+`reference/ccar-f-exam-guide.md`. Three questions: did it get all **30** task statements?
+all **240** bullets? the weights **27/18/20/20/15**? If its output carries the reference
+file's fingerprints (normalised ligatures, markdown headings, the summary header), it read
+the answer key instead of extracting the PDF — which is itself a finding worth having.
+
+**Open, small:** nothing blocking. The pipeline is ready to run as it stands.
+
+**Teaching thread:** Module 04 Concepts 4 and 5 (retrieval & generation metrics) still not
+learned — see the 2026-09-16 log. Re-teach slowly, anchored to something concrete. Then a
+fresh quiz; the 16th's was abandoned at Q2 and does not count. **After the run there will
+be real verdict files to hold, which is the concrete anchor those two concepts were
+missing.**
+
+## Session log — 2026-09-17: build day, and a decision about what this project is
+
+**The project's purpose was settled, and it reframes everything.** The learner asked
+directly: is Certification Trainer meant to be a generic tool, or a good run on this one
+certification? Named three goals rather than two — (1) a generic product, (2) the CCAR-F
+course itself, (3) learning agent engineering. **Chosen: goal 1 primary, goal 3 as the
+reason, goal 2 as a by-product.** The deciding argument: if only the course mattered, the
+pipeline is a ~30x more expensive route than handing the guide's 240 bullets to one Claude
+session. The pipeline is only worth running if the pipeline is the point. Consequence
+adopted immediately: nothing certification-specific lives in the pipeline's own
+definitions, and the real test of genericity is a *second* certification with no answer
+key — not now, but that is the run that would prove it.
+
+**Four changes shipped to `TarikJID/certification-trainer` `main`:**
+- `7d0a9b5` Trajectory logging. `evaluator` has `Write`, records a verdict file per stage
+  per round at `runs/<cert>/evaluations/<agent>-<unit>-round-<n>.md`, listing every
+  checklist item with an evidence column — passes included, since a file recording only
+  failures is no evidence the rest was examined. Unverifiable items go in a `Not checked`
+  section, never counted as passes. Returns only verdict + path + one line.
+- `43f53c5` The live integrity check, built and then cut (see below).
+- `7c031fb` + `275efec` Coverage. The exam guide's task statements — and the bullets
+  beneath them — are now the coverage target, flowing mapper → researcher → builder, with
+  a bullet-to-lesson table required in the outline. Source precedence added, with the exam
+  guide itself as tier 1, plus the terminal rule: no source at any tier means the concept
+  is still taught, flagged `UNSOURCED`, with a `Searched:` record. Missing sources never
+  block and never cause an omission.
+- `710fa61` Certification-agnostic hygiene.
+
+**The exam guide was extracted directly this session** (pure-python zlib + ToUnicode CMap
+decoding, since no pdf library was installable). Findings: **30 task statements, 240
+`Knowledge of:`/`Skills in:` bullets**, weights 27/18/20/20/15. Two corrections came out of
+it: Claude had guessed task statements read "the candidate can ..." — CCAR-F actually uses
+`Task Statement N.M:` plus an imperative phrase — and the bullets, not the statement lines,
+are the real coverage target. Stored at `reference/ccar-f-exam-guide.md`, deliberately
+outside `runs/`, as a **test fixture** for grading runs. The mapper is told never to read
+from `reference/`, and the file lists its own extraction fingerprints so a mapper that
+copies it can be caught. The first run's mapper got the weightings exactly right.
+
+**A control was built, then removed on the learner's call.** An integrity check —
+`git status` after each evaluation to catch the evaluator editing the work it judges. The
+learner asked whether it was overkill and what it might break. It was: it guarded a failure
+that has never occurred, cost a plausible false halt on an expensive run, and put the most
+complex procedure in the file into the orchestrator, the one component whose rules nothing
+enforces. Committing between stages already records everything, so `git log -p runs/`
+detects the same thing afterwards at no runtime cost. Removed. **Keep this as the reference
+case for "cut it" being the right engineering call** — the learner was right to push, and
+asked for a recommendation with a confidence level, which is a good habit to keep feeding.
+
+**Three catches by the learner, all the same species: what happens when two things run at
+once.** (1) The verdict filename did not identify which agent or which domain — fixed to
+`<agent>-<unit>-round-<n>`. (2) The first integrity check would have fired on innocent work,
+because a researcher writing its own file and a rogue evaluator edit look identical in a
+diff. (3) The fix for that was still wrong: researchers run *in parallel*, so "the evaluator
+is the only thing running" is false during the fan-out. Claude had over-claimed twice on the
+same point and had to drop the identification framing entirely — the check never identified
+anyone, it only ever detected that something changed which nobody was assigned to change.
+
+**Teaching note.** One "I don't understand the fix" and one "I don't understand" in
+sequence, on the integrity check. The hotel-corridor analogy failed, and the learner killed
+it with the right question ("what tells me it's not cleaner B?"). What worked was dropping
+the analogy, admitting the over-claim, and stating the mechanism plainly in four lines.
+**Pattern worth keeping: when an analogy is challenged on its internals, the analogy is
+usually wrong, not the learner.**
+
 ## Next step
 
 **DEADLINE: the learner has a $100 claude.ai promotional credit expiring 19 Sept.** (Not API credit —
