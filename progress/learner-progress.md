@@ -97,6 +97,179 @@ Status values: not started · in progress · completed · needs review
 - **Claude: keep using this project as the concrete example for module exercises, and
   proactively push toward that first real run** — it's the agreed milestone and everything is
   now in place for it.
+- **Project purpose (decided 2026-09-17): Certification Trainer is a GENERIC tool.** It must
+  work on any certification. Learning agent engineering is why it is being built this way;
+  the CCAR-F course is a by-product, not the objective. Nothing certification-specific goes
+  in the pipeline's definitions. Treat this as settled unless the learner reopens it.
+
+## Next step
+
+**Certification Trainer's milestone is DONE.** A complete, coverage-verified course was
+built on 18 Sept for $28.09, on branch `claude/confident-davinci-5nplxt` of
+`TarikJID/certification-trainer`. The pipeline on `main` is the version that produced it —
+no overrides, no hybrid state. Stop treating "get a first real run working" as the open
+thread; it closed.
+
+**Open, small, and the learner's to do:** read one lesson
+(`courses/claude-certified-architect-foundations/Module_1_.../lesson.md`) and judge whether
+it *teaches* rather than recites. Coverage and citation faithfulness are verified; pedagogy
+is not, and counts cannot settle it.
+
+**The live teaching thread: Module 04 Concepts 4 and 5** — retrieval metrics (Precision@K,
+Recall@K, MRR) and generation metrics (faithfulness, answer relevance, context utilisation).
+Still not learned; see the 2026-09-16 log for why the first attempt failed.
+
+**And now there is finally a concrete anchor for them.** Two runs of the same certification
+exist, with eleven verdict files between them:
+- *Precision@K* over the researcher's sources: of the pages it cited, how many were
+  relevant? The evaluator's faithfulness findings are exactly this failure.
+- *Faithfulness* is no longer abstract: three reworks in run 2 were citation-faithfulness
+  failures, each one written up in a verdict file the learner can open and read.
+- *Recall* is the 240-bullet coverage check they already understand.
+
+Teach them against those files, not against a definition list. That was the whole diagnosis
+on the 16th and the material now exists.
+
+**Then Module 05 (MCP · A2A · ADK) and Module 06 (Voice Agents)** remain untaught.
+
+**Possible side-project thread, if the learner wants it:** the real test of Certification
+Trainer as a *generic* tool is a second certification — a different one, with no answer key
+in `reference/` and an unknown guide format. Not urgent, no credit for it now, but that is
+the run that would prove goal 1 rather than assume it.
+
+## Session logs
+
+Newest first.
+
+## Session log — 2026-09-18: the pipeline works, and it is provable
+
+**Certification Trainer produced a complete, verifiable course for $28.09.** Run 1 cost
+$53.68 and its quality claims could not be checked at all. The difference is the work of
+the 17th and 18th.
+
+| | Run 1 (15 Sept) | Run 2 (18 Sept) |
+|---|---|---|
+| Cost | $53.68 | **$28.09** |
+| Concepts | 115 | **186** |
+| Course | 6 modules, ~3,880 lines | **10 modules, 5,512 lines** |
+| Coverage | unverifiable | **240/240 bullet IDs, exact set match** |
+| Verdict files | 0 | **11** |
+| Rework cause | source-tier labels | **citation faithfulness** |
+
+**The coverage claim was verified, not trusted:** every one of the 240 bullet IDs in
+`domain-map.md` appears in `course-outline.md`, with zero missing and zero invented. That
+is the direct answer to the question the learner could not answer on the 16th.
+
+**The strongest single result is what the reworks were about.** All three researcher
+reworks in run 2 were **citation-faithfulness failures** — a prerequisite mis-attributed,
+a concept whose cited source did not support it, two attributions "not faithful to the
+source they cite". That is Module 03's *silent blending* being caught mechanically, three
+times, by a machine. In the previous run the rework was "you labelled the source tier
+wrong". **The learner's challenge to the tier design is what moved the evaluator's
+attention from bookkeeping to substance** — of everything changed across two days, that
+fix has the clearest evidence behind it.
+
+**Four challenges from the learner, all correct, all acted on:**
+1. **"Isn't the integrity check overkill?"** (17th) — it was. Built, then cut. Git history
+   already records tampering after the fact at no runtime cost, and the check put the most
+   complex procedure in the file into the one component whose rules nothing enforces.
+2. **"Why is Claude product documentation tier 2?"** (18th) — the four-tier precedence put
+   the exam guide above the vendor's own docs, so "prefer the highest tier" told researchers
+   to prefer a syllabus line over the documentation that defines the thing. Collapsed to
+   official / non-official, unranked.
+3. **"Why staged?"** (18th) — the three-stage plan was calibrated to price uncertainty that
+   no longer existed. Collapsed to one session with a single pause, kept only because
+   `domain-mapper`'s output format had changed and five researchers would inherit any
+   breakage. The pause then did exactly that job: 240 IDs, all lists numbered 1..n, no gaps.
+4. **"The orchestrator talks about 'my' work — is it doing the work?"** (18th) — it was not.
+   Every quoted line mapped to an explicit orchestrator duty, three of them added that same
+   afternoon. **The test that settles it: counting is not producing.** The line is
+   authorship, not activity. Verified from the diff that the rework changed only summary
+   counts — not one bullet, not one ID.
+
+**Four defects the two-domain run exposed, fixed and pushed** (`c67575e`): source tiers
+collapsed; bullet IDs moved from the orchestrator's dispatch prompts into `domain-mapper`'s
+own output, where they cannot vanish with a session; dispatch slices moved from the
+scratchpad into the repo so verdicts cite inputs that survive; researcher self-reported
+counts now checked against the file.
+
+**Decision worth keeping: restart clean rather than finish the hybrid.** Session A had two
+domains under the old spec; finishing would have produced a course and no clean answer to
+"does the pipeline on `main` produce this?". The $10.21 already spent was tuition, not
+waste. Goal 1 made the call obvious.
+
+**Budget note:** the run crossed into overage mid-flight (`isUsingOverage: true`, 5-hour
+window `rejected`) and completed straight through it, because the prompt told the
+orchestrator that rate-limit warnings are the credit handover working as designed, not a
+reason to stop. Without that line it would probably have halted itself.
+
+**Not verified, and the learner is doing it:** coverage is not quality. Every bullet has a
+lesson and the citations survived scrutiny, but whether the course *teaches well* needs a
+human reading a lesson.
+
+## Session log — 2026-09-17: build day, and a decision about what this project is
+
+**The project's purpose was settled, and it reframes everything.** The learner asked
+directly: is Certification Trainer meant to be a generic tool, or a good run on this one
+certification? Named three goals rather than two — (1) a generic product, (2) the CCAR-F
+course itself, (3) learning agent engineering. **Chosen: goal 1 primary, goal 3 as the
+reason, goal 2 as a by-product.** The deciding argument: if only the course mattered, the
+pipeline is a ~30x more expensive route than handing the guide's 240 bullets to one Claude
+session. The pipeline is only worth running if the pipeline is the point. Consequence
+adopted immediately: nothing certification-specific lives in the pipeline's own
+definitions, and the real test of genericity is a *second* certification with no answer
+key — not now, but that is the run that would prove it.
+
+**Four changes shipped to `TarikJID/certification-trainer` `main`:**
+- `7d0a9b5` Trajectory logging. `evaluator` has `Write`, records a verdict file per stage
+  per round at `runs/<cert>/evaluations/<agent>-<unit>-round-<n>.md`, listing every
+  checklist item with an evidence column — passes included, since a file recording only
+  failures is no evidence the rest was examined. Unverifiable items go in a `Not checked`
+  section, never counted as passes. Returns only verdict + path + one line.
+- `43f53c5` The live integrity check, built and then cut (see below).
+- `7c031fb` + `275efec` Coverage. The exam guide's task statements — and the bullets
+  beneath them — are now the coverage target, flowing mapper → researcher → builder, with
+  a bullet-to-lesson table required in the outline. Source precedence added, with the exam
+  guide itself as tier 1, plus the terminal rule: no source at any tier means the concept
+  is still taught, flagged `UNSOURCED`, with a `Searched:` record. Missing sources never
+  block and never cause an omission.
+- `710fa61` Certification-agnostic hygiene.
+
+**The exam guide was extracted directly this session** (pure-python zlib + ToUnicode CMap
+decoding, since no pdf library was installable). Findings: **30 task statements, 240
+`Knowledge of:`/`Skills in:` bullets**, weights 27/18/20/20/15. Two corrections came out of
+it: Claude had guessed task statements read "the candidate can ..." — CCAR-F actually uses
+`Task Statement N.M:` plus an imperative phrase — and the bullets, not the statement lines,
+are the real coverage target. Stored at `reference/ccar-f-exam-guide.md`, deliberately
+outside `runs/`, as a **test fixture** for grading runs. The mapper is told never to read
+from `reference/`, and the file lists its own extraction fingerprints so a mapper that
+copies it can be caught. The first run's mapper got the weightings exactly right.
+
+**A control was built, then removed on the learner's call.** An integrity check —
+`git status` after each evaluation to catch the evaluator editing the work it judges. The
+learner asked whether it was overkill and what it might break. It was: it guarded a failure
+that has never occurred, cost a plausible false halt on an expensive run, and put the most
+complex procedure in the file into the orchestrator, the one component whose rules nothing
+enforces. Committing between stages already records everything, so `git log -p runs/`
+detects the same thing afterwards at no runtime cost. Removed. **Keep this as the reference
+case for "cut it" being the right engineering call** — the learner was right to push, and
+asked for a recommendation with a confidence level, which is a good habit to keep feeding.
+
+**Three catches by the learner, all the same species: what happens when two things run at
+once.** (1) The verdict filename did not identify which agent or which domain — fixed to
+`<agent>-<unit>-round-<n>`. (2) The first integrity check would have fired on innocent work,
+because a researcher writing its own file and a rogue evaluator edit look identical in a
+diff. (3) The fix for that was still wrong: researchers run *in parallel*, so "the evaluator
+is the only thing running" is false during the fan-out. Claude had over-claimed twice on the
+same point and had to drop the identification framing entirely — the check never identified
+anyone, it only ever detected that something changed which nobody was assigned to change.
+
+**Teaching note.** One "I don't understand the fix" and one "I don't understand" in
+sequence, on the integrity check. The hotel-corridor analogy failed, and the learner killed
+it with the right question ("what tells me it's not cleaner B?"). What worked was dropping
+the analogy, admitting the over-claim, and stating the mechanism plainly in four lines.
+**Pattern worth keeping: when an analogy is challenged on its internals, the analogy is
+usually wrong, not the learner.**
 
 ## Session log — 2026-09-16: the run finished, and Module 04 half-landed
 
@@ -138,370 +311,6 @@ something concrete — the module's `AI_Eval_Metrics.ipynb` has real numbers, or
 Partial credit worth keeping: on Q1 the learner correctly identified that no efficiency standard was
 defined to fail against (a real Module 01-flavoured insight), but missed the generalisation point.
 On the retrieval check they named MRR correctly; the "what the user experiences" half was muddled.
-
-## Session log — 2026-09-17: build day, and a decision about what this project is
-
-**The project's purpose was settled, and it reframes everything.** The learner asked
-directly: is Certification Trainer meant to be a generic tool, or a good run on this one
-certification? Named three goals rather than two — (1) a generic product, (2) the CCAR-F
-course itself, (3) learning agent engineering. **Chosen: goal 1 primary, goal 3 as the
-reason, goal 2 as a by-product.** The deciding argument: if only the course mattered, the
-pipeline is a ~30x more expensive route than handing the guide's 240 bullets to one Claude
-session. The pipeline is only worth running if the pipeline is the point. Consequence
-adopted immediately: nothing certification-specific lives in the pipeline's own
-definitions, and the real test of genericity is a *second* certification with no answer
-key — not now, but that is the run that would prove it.
-
-**Four changes shipped to `TarikJID/certification-trainer` `main`:**
-- `7d0a9b5` Trajectory logging. `evaluator` has `Write`, records a verdict file per stage
-  per round at `runs/<cert>/evaluations/<agent>-<unit>-round-<n>.md`, listing every
-  checklist item with an evidence column — passes included, since a file recording only
-  failures is no evidence the rest was examined. Unverifiable items go in a `Not checked`
-  section, never counted as passes. Returns only verdict + path + one line.
-- `43f53c5` The live integrity check, built and then cut (see below).
-- `7c031fb` + `275efec` Coverage. The exam guide's task statements — and the bullets
-  beneath them — are now the coverage target, flowing mapper → researcher → builder, with
-  a bullet-to-lesson table required in the outline. Source precedence added, with the exam
-  guide itself as tier 1, plus the terminal rule: no source at any tier means the concept
-  is still taught, flagged `UNSOURCED`, with a `Searched:` record. Missing sources never
-  block and never cause an omission.
-- `710fa61` Certification-agnostic hygiene.
-
-**The exam guide was extracted directly this session** (pure-python zlib + ToUnicode CMap
-decoding, since no pdf library was installable). Findings: **30 task statements, 240
-`Knowledge of:`/`Skills in:` bullets**, weights 27/18/20/20/15. Two corrections came out of
-it: Claude had guessed task statements read "the candidate can ..." — CCAR-F actually uses
-`Task Statement N.M:` plus an imperative phrase — and the bullets, not the statement lines,
-are the real coverage target. Stored at `reference/ccar-f-exam-guide.md`, deliberately
-outside `runs/`, as a **test fixture** for grading runs. The mapper is told never to read
-from `reference/`, and the file lists its own extraction fingerprints so a mapper that
-copies it can be caught. The first run's mapper got the weightings exactly right.
-
-**A control was built, then removed on the learner's call.** An integrity check —
-`git status` after each evaluation to catch the evaluator editing the work it judges. The
-learner asked whether it was overkill and what it might break. It was: it guarded a failure
-that has never occurred, cost a plausible false halt on an expensive run, and put the most
-complex procedure in the file into the orchestrator, the one component whose rules nothing
-enforces. Committing between stages already records everything, so `git log -p runs/`
-detects the same thing afterwards at no runtime cost. Removed. **Keep this as the reference
-case for "cut it" being the right engineering call** — the learner was right to push, and
-asked for a recommendation with a confidence level, which is a good habit to keep feeding.
-
-**Three catches by the learner, all the same species: what happens when two things run at
-once.** (1) The verdict filename did not identify which agent or which domain — fixed to
-`<agent>-<unit>-round-<n>`. (2) The first integrity check would have fired on innocent work,
-because a researcher writing its own file and a rogue evaluator edit look identical in a
-diff. (3) The fix for that was still wrong: researchers run *in parallel*, so "the evaluator
-is the only thing running" is false during the fan-out. Claude had over-claimed twice on the
-same point and had to drop the identification framing entirely — the check never identified
-anyone, it only ever detected that something changed which nobody was assigned to change.
-
-**Teaching note.** One "I don't understand the fix" and one "I don't understand" in
-sequence, on the integrity check. The hotel-corridor analogy failed, and the learner killed
-it with the right question ("what tells me it's not cleaner B?"). What worked was dropping
-the analogy, admitting the over-claim, and stating the mechanism plainly in four lines.
-**Pattern worth keeping: when an analogy is challenged on its internals, the analogy is
-usually wrong, not the learner.**
-
-## Session log — 2026-09-18: the pipeline works, and it is provable
-
-**Certification Trainer produced a complete, verifiable course for $28.09.** Run 1 cost
-$53.68 and its quality claims could not be checked at all. The difference is the work of
-the 17th and 18th.
-
-| | Run 1 (15 Sept) | Run 2 (18 Sept) |
-|---|---|---|
-| Cost | $53.68 | **$28.09** |
-| Concepts | 115 | **186** |
-| Course | 6 modules, ~3,880 lines | **10 modules, 5,512 lines** |
-| Coverage | unverifiable | **240/240 bullet IDs, exact set match** |
-| Verdict files | 0 | **11** |
-| Rework cause | source-tier labels | **citation faithfulness** |
-
-**The coverage claim was verified, not trusted:** every one of the 240 bullet IDs in
-`domain-map.md` appears in `course-outline.md`, with zero missing and zero invented. That
-is the direct answer to the question the learner could not answer on the 16th.
-
-**The strongest single result is what the reworks were about.** All three researcher
-reworks in run 2 were **citation-faithfulness failures** — a prerequisite mis-attributed,
-a concept whose cited source did not support it, two attributions "not faithful to the
-source they cite". That is Module 03's *silent blending* being caught mechanically, three
-times, by a machine. In the previous run the rework was "you labelled the source tier
-wrong". **The learner's challenge to the tier design is what moved the evaluator's
-attention from bookkeeping to substance** — of everything changed across two days, that
-fix has the clearest evidence behind it.
-
-**Four challenges from the learner, all correct, all acted on:**
-1. **"Isn't the integrity check overkill?"** (17th) — it was. Built, then cut. Git history
-   already records tampering after the fact at no runtime cost, and the check put the most
-   complex procedure in the file into the one component whose rules nothing enforces.
-2. **"Why is Claude product documentation tier 2?"** (18th) — the four-tier precedence put
-   the exam guide above the vendor's own docs, so "prefer the highest tier" told researchers
-   to prefer a syllabus line over the documentation that defines the thing. Collapsed to
-   official / non-official, unranked.
-3. **"Why staged?"** (18th) — the three-stage plan was calibrated to price uncertainty that
-   no longer existed. Collapsed to one session with a single pause, kept only because
-   `domain-mapper`'s output format had changed and five researchers would inherit any
-   breakage. The pause then did exactly that job: 240 IDs, all lists numbered 1..n, no gaps.
-4. **"The orchestrator talks about 'my' work — is it doing the work?"** (18th) — it was not.
-   Every quoted line mapped to an explicit orchestrator duty, three of them added that same
-   afternoon. **The test that settles it: counting is not producing.** The line is
-   authorship, not activity. Verified from the diff that the rework changed only summary
-   counts — not one bullet, not one ID.
-
-**Four defects the two-domain run exposed, fixed and pushed** (`c67575e`): source tiers
-collapsed; bullet IDs moved from the orchestrator's dispatch prompts into `domain-mapper`'s
-own output, where they cannot vanish with a session; dispatch slices moved from the
-scratchpad into the repo so verdicts cite inputs that survive; researcher self-reported
-counts now checked against the file.
-
-**Decision worth keeping: restart clean rather than finish the hybrid.** Session A had two
-domains under the old spec; finishing would have produced a course and no clean answer to
-"does the pipeline on `main` produce this?". The $10.21 already spent was tuition, not
-waste. Goal 1 made the call obvious.
-
-**Budget note:** the run crossed into overage mid-flight (`isUsingOverage: true`, 5-hour
-window `rejected`) and completed straight through it, because the prompt told the
-orchestrator that rate-limit warnings are the credit handover working as designed, not a
-reason to stop. Without that line it would probably have halted itself.
-
-**Not verified, and the learner is doing it:** coverage is not quality. Every bullet has a
-lesson and the citations survived scrutiny, but whether the course *teaches well* needs a
-human reading a lesson.
-
-## Next step
-
-**Certification Trainer's milestone is DONE.** A complete, coverage-verified course was
-built on 18 Sept for $28.09, on branch `claude/confident-davinci-5nplxt` of
-`TarikJID/certification-trainer`. The pipeline on `main` is the version that produced it —
-no overrides, no hybrid state. Stop treating "get a first real run working" as the open
-thread; it closed.
-
-**Open, small, and the learner's to do:** read one lesson
-(`courses/claude-certified-architect-foundations/Module_1_.../lesson.md`) and judge whether
-it *teaches* rather than recites. Coverage and citation faithfulness are verified; pedagogy
-is not, and counts cannot settle it.
-
-**The live teaching thread: Module 04 Concepts 4 and 5** — retrieval metrics (Precision@K,
-Recall@K, MRR) and generation metrics (faithfulness, answer relevance, context utilisation).
-Still not learned; see the 2026-09-16 log for why the first attempt failed.
-
-**And now there is finally a concrete anchor for them.** Two runs of the same certification
-exist, with eleven verdict files between them:
-- *Precision@K* over the researcher's sources: of the pages it cited, how many were
-  relevant? The evaluator's faithfulness findings are exactly this failure.
-- *Faithfulness* is no longer abstract: three reworks in run 2 were citation-faithfulness
-  failures, each one written up in a verdict file the learner can open and read.
-- *Recall* is the 240-bullet coverage check they already understand.
-
-Teach them against those files, not against a definition list. That was the whole diagnosis
-on the 16th and the material now exists.
-
-**Then Module 05 (MCP · A2A · ADK) and Module 06 (Voice Agents)** remain untaught.
-
-**Possible side-project thread, if the learner wants it:** the real test of Certification
-Trainer as a *generic* tool is a second certification — a different one, with no answer key
-in `reference/` and an unknown guide format. Not urgent, no credit for it now, but that is
-the run that would prove goal 1 rather than assume it.
-
-## Session log — 2026-09-18: the pipeline works, and it is provable
-
-**Certification Trainer produced a complete, verifiable course for $28.09.** Run 1 cost
-$53.68 and its quality claims could not be checked at all. The difference is the work of
-the 17th and 18th.
-
-| | Run 1 (15 Sept) | Run 2 (18 Sept) |
-|---|---|---|
-| Cost | $53.68 | **$28.09** |
-| Concepts | 115 | **186** |
-| Course | 6 modules, ~3,880 lines | **10 modules, 5,512 lines** |
-| Coverage | unverifiable | **240/240 bullet IDs, exact set match** |
-| Verdict files | 0 | **11** |
-| Rework cause | source-tier labels | **citation faithfulness** |
-
-**The coverage claim was verified, not trusted:** every one of the 240 bullet IDs in
-`domain-map.md` appears in `course-outline.md`, with zero missing and zero invented. That
-is the direct answer to the question the learner could not answer on the 16th.
-
-**The strongest single result is what the reworks were about.** All three researcher
-reworks in run 2 were **citation-faithfulness failures** — a prerequisite mis-attributed,
-a concept whose cited source did not support it, two attributions "not faithful to the
-source they cite". That is Module 03's *silent blending* being caught mechanically, three
-times, by a machine. In the previous run the rework was "you labelled the source tier
-wrong". **The learner's challenge to the tier design is what moved the evaluator's
-attention from bookkeeping to substance** — of everything changed across two days, that
-fix has the clearest evidence behind it.
-
-**Four challenges from the learner, all correct, all acted on:**
-1. **"Isn't the integrity check overkill?"** (17th) — it was. Built, then cut. Git history
-   already records tampering after the fact at no runtime cost, and the check put the most
-   complex procedure in the file into the one component whose rules nothing enforces.
-2. **"Why is Claude product documentation tier 2?"** (18th) — the four-tier precedence put
-   the exam guide above the vendor's own docs, so "prefer the highest tier" told researchers
-   to prefer a syllabus line over the documentation that defines the thing. Collapsed to
-   official / non-official, unranked.
-3. **"Why staged?"** (18th) — the three-stage plan was calibrated to price uncertainty that
-   no longer existed. Collapsed to one session with a single pause, kept only because
-   `domain-mapper`'s output format had changed and five researchers would inherit any
-   breakage. The pause then did exactly that job: 240 IDs, all lists numbered 1..n, no gaps.
-4. **"The orchestrator talks about 'my' work — is it doing the work?"** (18th) — it was not.
-   Every quoted line mapped to an explicit orchestrator duty, three of them added that same
-   afternoon. **The test that settles it: counting is not producing.** The line is
-   authorship, not activity. Verified from the diff that the rework changed only summary
-   counts — not one bullet, not one ID.
-
-**Four defects the two-domain run exposed, fixed and pushed** (`c67575e`): source tiers
-collapsed; bullet IDs moved from the orchestrator's dispatch prompts into `domain-mapper`'s
-own output, where they cannot vanish with a session; dispatch slices moved from the
-scratchpad into the repo so verdicts cite inputs that survive; researcher self-reported
-counts now checked against the file.
-
-**Decision worth keeping: restart clean rather than finish the hybrid.** Session A had two
-domains under the old spec; finishing would have produced a course and no clean answer to
-"does the pipeline on `main` produce this?". The $10.21 already spent was tuition, not
-waste. Goal 1 made the call obvious.
-
-**Budget note:** the run crossed into overage mid-flight (`isUsingOverage: true`, 5-hour
-window `rejected`) and completed straight through it, because the prompt told the
-orchestrator that rate-limit warnings are the credit handover working as designed, not a
-reason to stop. Without that line it would probably have halted itself.
-
-**Not verified, and the learner is doing it:** coverage is not quality. Every bullet has a
-lesson and the citations survived scrutiny, but whether the course *teaches well* needs a
-human reading a lesson.
-
-## Next step
-
-**Project purpose (decided 2026-09-17): Certification Trainer is a GENERIC tool.** It must
-work on any certification. Learning agent engineering is why it is being built this way;
-the CCAR-F course is a by-product, not the objective. Nothing certification-specific goes
-in the pipeline's definitions. Treat this as settled unless the learner reopens it.
-
-**DEADLINE: the $100 claude.ai promotional credit expires 19 Sept.** A `send_later` reminder
-is armed for **18 Sept 07:00 UTC** carrying the pre-run checklist
-(`trig_019FPHLgheKC4msgYZYhRwDz`).
-
-| When | What | Status |
-|---|---|---|
-| 17 Sept | Implement the improvements | **done — 4 commits on `main`** |
-| 17 eve / 18 am | **Pilot: `domain-mapper` alone** | **not yet run — learner will launch** |
-| 18 Sept | Full fresh run off `main` | pending |
-| 19 Sept | **Buffer. Nothing scheduled.** | — |
-
-Never let the run slip to the 19th.
-
-**How to grade the pilot.** Diff the mapper's `runs/<cert>/domain-map.md` against
-`reference/ccar-f-exam-guide.md`. Three questions: did it get all **30** task statements?
-all **240** bullets? the weights **27/18/20/20/15**? If its output carries the reference
-file's fingerprints (normalised ligatures, markdown headings, the summary header), it read
-the answer key instead of extracting the PDF — which is itself a finding worth having.
-
-**Open, small:** nothing blocking. The pipeline is ready to run as it stands.
-
-**Teaching thread:** Module 04 Concepts 4 and 5 (retrieval & generation metrics) still not
-learned — see the 2026-09-16 log. Re-teach slowly, anchored to something concrete. Then a
-fresh quiz; the 16th's was abandoned at Q2 and does not count. **After the run there will
-be real verdict files to hold, which is the concrete anchor those two concepts were
-missing.**
-
-## Session log — 2026-09-17: build day, and a decision about what this project is
-
-**The project's purpose was settled, and it reframes everything.** The learner asked
-directly: is Certification Trainer meant to be a generic tool, or a good run on this one
-certification? Named three goals rather than two — (1) a generic product, (2) the CCAR-F
-course itself, (3) learning agent engineering. **Chosen: goal 1 primary, goal 3 as the
-reason, goal 2 as a by-product.** The deciding argument: if only the course mattered, the
-pipeline is a ~30x more expensive route than handing the guide's 240 bullets to one Claude
-session. The pipeline is only worth running if the pipeline is the point. Consequence
-adopted immediately: nothing certification-specific lives in the pipeline's own
-definitions, and the real test of genericity is a *second* certification with no answer
-key — not now, but that is the run that would prove it.
-
-**Four changes shipped to `TarikJID/certification-trainer` `main`:**
-- `7d0a9b5` Trajectory logging. `evaluator` has `Write`, records a verdict file per stage
-  per round at `runs/<cert>/evaluations/<agent>-<unit>-round-<n>.md`, listing every
-  checklist item with an evidence column — passes included, since a file recording only
-  failures is no evidence the rest was examined. Unverifiable items go in a `Not checked`
-  section, never counted as passes. Returns only verdict + path + one line.
-- `43f53c5` The live integrity check, built and then cut (see below).
-- `7c031fb` + `275efec` Coverage. The exam guide's task statements — and the bullets
-  beneath them — are now the coverage target, flowing mapper → researcher → builder, with
-  a bullet-to-lesson table required in the outline. Source precedence added, with the exam
-  guide itself as tier 1, plus the terminal rule: no source at any tier means the concept
-  is still taught, flagged `UNSOURCED`, with a `Searched:` record. Missing sources never
-  block and never cause an omission.
-- `710fa61` Certification-agnostic hygiene.
-
-**The exam guide was extracted directly this session** (pure-python zlib + ToUnicode CMap
-decoding, since no pdf library was installable). Findings: **30 task statements, 240
-`Knowledge of:`/`Skills in:` bullets**, weights 27/18/20/20/15. Two corrections came out of
-it: Claude had guessed task statements read "the candidate can ..." — CCAR-F actually uses
-`Task Statement N.M:` plus an imperative phrase — and the bullets, not the statement lines,
-are the real coverage target. Stored at `reference/ccar-f-exam-guide.md`, deliberately
-outside `runs/`, as a **test fixture** for grading runs. The mapper is told never to read
-from `reference/`, and the file lists its own extraction fingerprints so a mapper that
-copies it can be caught. The first run's mapper got the weightings exactly right.
-
-**A control was built, then removed on the learner's call.** An integrity check —
-`git status` after each evaluation to catch the evaluator editing the work it judges. The
-learner asked whether it was overkill and what it might break. It was: it guarded a failure
-that has never occurred, cost a plausible false halt on an expensive run, and put the most
-complex procedure in the file into the orchestrator, the one component whose rules nothing
-enforces. Committing between stages already records everything, so `git log -p runs/`
-detects the same thing afterwards at no runtime cost. Removed. **Keep this as the reference
-case for "cut it" being the right engineering call** — the learner was right to push, and
-asked for a recommendation with a confidence level, which is a good habit to keep feeding.
-
-**Three catches by the learner, all the same species: what happens when two things run at
-once.** (1) The verdict filename did not identify which agent or which domain — fixed to
-`<agent>-<unit>-round-<n>`. (2) The first integrity check would have fired on innocent work,
-because a researcher writing its own file and a rogue evaluator edit look identical in a
-diff. (3) The fix for that was still wrong: researchers run *in parallel*, so "the evaluator
-is the only thing running" is false during the fan-out. Claude had over-claimed twice on the
-same point and had to drop the identification framing entirely — the check never identified
-anyone, it only ever detected that something changed which nobody was assigned to change.
-
-**Teaching note.** One "I don't understand the fix" and one "I don't understand" in
-sequence, on the integrity check. The hotel-corridor analogy failed, and the learner killed
-it with the right question ("what tells me it's not cleaner B?"). What worked was dropping
-the analogy, admitting the over-claim, and stating the mechanism plainly in four lines.
-**Pattern worth keeping: when an analogy is challenged on its internals, the analogy is
-usually wrong, not the learner.**
-
-## Next step
-
-**DEADLINE: the learner has a $100 claude.ai promotional credit expiring 19 Sept.** (Not API credit —
-console.anthropic.com holds only $1.55. It applies to claude.ai usage, most likely funding overage
-once a 5-hour window is exhausted.) Agreed plan, and a `send_later` reminder is armed for
-**18 Sept 07:00 UTC** carrying the pre-run checklist (`trig_019FPHLgheKC4msgYZYhRwDz`):
-
-| When | What |
-|---|---|
-| 17 Sept | Implement improvements — **trajectory logging is the big one** |
-| 17 eve / 18 am | **Pilot: `domain-mapper` alone.** Cents. Proves the new verbatim-task-statement spec works |
-| 18 Sept | Full fresh run off `main` |
-| 19 Sept | **Buffer. Nothing scheduled.** Re-run day if the 18th breaks |
-
-Never let the run slip to the 19th — a failure there loses the credit entirely.
-
-**Improvements still to make before that run:**
-1. **Trajectory logging** — the evaluator's verdicts must be written to disk per stage. Today they
-   exist only in the run session's context; the repo holds outcomes (`Apply rework to X`) and no
-   record of *what was wrong*. This is the single highest-value change: without it the learner spends
-   $100 and gets another unauditable run.
-2. **Task-statement coverage check** — every task statement has ≥1 concept teaching it.
-3. **Source-precedence rule** in `domain-researcher.md` — official exam guide > official product docs >
-   reputable secondary, guide valid on its own, **plus a terminal rule**: if no source exists at any
-   tier, include the concept with an explicit `UNSOURCED` flag and carry it downstream. Missing sources
-   must never block. (The learner reasoned this one out: the hatch is safe because the evaluator audits
-   the *search*, not the outcome, and the search log is more work to fake than to do.)
-4. **Verify the phrasing guess.** `domain-mapper.md` says task statements are the numbered
-   *"the candidate can ..."* items. Claude guessed that convention without seeing the CCAR-F guide.
-   Check it against the real PDF — a wrong parenthetical costs a round.
-
-**Teaching thread:** finish Module 04 — Concepts 4 and 5 only, re-taught slowly and anchored to
-something concrete (see the teaching-error note in the session log). Then a fresh quiz; today's was
-abandoned at Q2 and does not count.
 
 ## Session log — 2026-09-15 (lunch): the blocked first run
 
