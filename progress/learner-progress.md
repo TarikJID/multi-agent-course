@@ -72,7 +72,9 @@ Status values: not started · in progress · completed · needs review
   inside it — it's a real product, not teaching material, and a dedicated repo makes git the
   single source of truth across sessions/machines (this was prompted by the earlier work-computer
   session whose `domain-researcher.md` never reached any repo and is now lost).
-- **Status: pipeline complete and pushed.** All four agent definitions written this session,
+- **Status: RUNNING AND VERIFIED.** A complete course was built 18 Sept for $28.09 with
+  240/240 bullet coverage and 11 verdict files, on branch `claude/confident-davinci-5nplxt`.
+  Earlier note kept for history: All four agent definitions written this session,
   each specced by the learner first and then drafted/iterated together:
   - `.claude/agents/domain-mapper.md` — fetches official cert page, returns structured domains.
   - `.claude/agents/evaluator.md` — checks each stage against that stage's own "Done when"
@@ -90,8 +92,7 @@ Status values: not started · in progress · completed · needs review
 - **Bug caught in review:** the orchestrator's file-passing design was unimplementable — mapper
   and researcher had no `Write`, evaluator had no `Read`. Fixed. Good illustration for the
   learner of their own "prompt layer vs. tool layer" insight failing in the other direction.
-- **Next milestone:** the real first end-to-end run against an actual certification. Not yet
-  done. After that, a separate **tutor agent** (decided this session to keep teaching separate
+- **Milestone ACHIEVED 2026-09-18.** After that, a separate **tutor agent** (decided this session to keep teaching separate
   from building — the tutor is a separate entry point, not a 7th pipeline step).
 - **Claude: keep using this project as the concrete example for module exercises, and
   proactively push toward that first real run** — it's the agreed milestone and everything is
@@ -201,6 +202,173 @@ it with the right question ("what tells me it's not cleaner B?"). What worked wa
 the analogy, admitting the over-claim, and stating the mechanism plainly in four lines.
 **Pattern worth keeping: when an analogy is challenged on its internals, the analogy is
 usually wrong, not the learner.**
+
+## Session log — 2026-09-18: the pipeline works, and it is provable
+
+**Certification Trainer produced a complete, verifiable course for $28.09.** Run 1 cost
+$53.68 and its quality claims could not be checked at all. The difference is the work of
+the 17th and 18th.
+
+| | Run 1 (15 Sept) | Run 2 (18 Sept) |
+|---|---|---|
+| Cost | $53.68 | **$28.09** |
+| Concepts | 115 | **186** |
+| Course | 6 modules, ~3,880 lines | **10 modules, 5,512 lines** |
+| Coverage | unverifiable | **240/240 bullet IDs, exact set match** |
+| Verdict files | 0 | **11** |
+| Rework cause | source-tier labels | **citation faithfulness** |
+
+**The coverage claim was verified, not trusted:** every one of the 240 bullet IDs in
+`domain-map.md` appears in `course-outline.md`, with zero missing and zero invented. That
+is the direct answer to the question the learner could not answer on the 16th.
+
+**The strongest single result is what the reworks were about.** All three researcher
+reworks in run 2 were **citation-faithfulness failures** — a prerequisite mis-attributed,
+a concept whose cited source did not support it, two attributions "not faithful to the
+source they cite". That is Module 03's *silent blending* being caught mechanically, three
+times, by a machine. In the previous run the rework was "you labelled the source tier
+wrong". **The learner's challenge to the tier design is what moved the evaluator's
+attention from bookkeeping to substance** — of everything changed across two days, that
+fix has the clearest evidence behind it.
+
+**Four challenges from the learner, all correct, all acted on:**
+1. **"Isn't the integrity check overkill?"** (17th) — it was. Built, then cut. Git history
+   already records tampering after the fact at no runtime cost, and the check put the most
+   complex procedure in the file into the one component whose rules nothing enforces.
+2. **"Why is Claude product documentation tier 2?"** (18th) — the four-tier precedence put
+   the exam guide above the vendor's own docs, so "prefer the highest tier" told researchers
+   to prefer a syllabus line over the documentation that defines the thing. Collapsed to
+   official / non-official, unranked.
+3. **"Why staged?"** (18th) — the three-stage plan was calibrated to price uncertainty that
+   no longer existed. Collapsed to one session with a single pause, kept only because
+   `domain-mapper`'s output format had changed and five researchers would inherit any
+   breakage. The pause then did exactly that job: 240 IDs, all lists numbered 1..n, no gaps.
+4. **"The orchestrator talks about 'my' work — is it doing the work?"** (18th) — it was not.
+   Every quoted line mapped to an explicit orchestrator duty, three of them added that same
+   afternoon. **The test that settles it: counting is not producing.** The line is
+   authorship, not activity. Verified from the diff that the rework changed only summary
+   counts — not one bullet, not one ID.
+
+**Four defects the two-domain run exposed, fixed and pushed** (`c67575e`): source tiers
+collapsed; bullet IDs moved from the orchestrator's dispatch prompts into `domain-mapper`'s
+own output, where they cannot vanish with a session; dispatch slices moved from the
+scratchpad into the repo so verdicts cite inputs that survive; researcher self-reported
+counts now checked against the file.
+
+**Decision worth keeping: restart clean rather than finish the hybrid.** Session A had two
+domains under the old spec; finishing would have produced a course and no clean answer to
+"does the pipeline on `main` produce this?". The $10.21 already spent was tuition, not
+waste. Goal 1 made the call obvious.
+
+**Budget note:** the run crossed into overage mid-flight (`isUsingOverage: true`, 5-hour
+window `rejected`) and completed straight through it, because the prompt told the
+orchestrator that rate-limit warnings are the credit handover working as designed, not a
+reason to stop. Without that line it would probably have halted itself.
+
+**Not verified, and the learner is doing it:** coverage is not quality. Every bullet has a
+lesson and the citations survived scrutiny, but whether the course *teaches well* needs a
+human reading a lesson.
+
+## Next step
+
+**Certification Trainer's milestone is DONE.** A complete, coverage-verified course was
+built on 18 Sept for $28.09, on branch `claude/confident-davinci-5nplxt` of
+`TarikJID/certification-trainer`. The pipeline on `main` is the version that produced it —
+no overrides, no hybrid state. Stop treating "get a first real run working" as the open
+thread; it closed.
+
+**Open, small, and the learner's to do:** read one lesson
+(`courses/claude-certified-architect-foundations/Module_1_.../lesson.md`) and judge whether
+it *teaches* rather than recites. Coverage and citation faithfulness are verified; pedagogy
+is not, and counts cannot settle it.
+
+**The live teaching thread: Module 04 Concepts 4 and 5** — retrieval metrics (Precision@K,
+Recall@K, MRR) and generation metrics (faithfulness, answer relevance, context utilisation).
+Still not learned; see the 2026-09-16 log for why the first attempt failed.
+
+**And now there is finally a concrete anchor for them.** Two runs of the same certification
+exist, with eleven verdict files between them:
+- *Precision@K* over the researcher's sources: of the pages it cited, how many were
+  relevant? The evaluator's faithfulness findings are exactly this failure.
+- *Faithfulness* is no longer abstract: three reworks in run 2 were citation-faithfulness
+  failures, each one written up in a verdict file the learner can open and read.
+- *Recall* is the 240-bullet coverage check they already understand.
+
+Teach them against those files, not against a definition list. That was the whole diagnosis
+on the 16th and the material now exists.
+
+**Then Module 05 (MCP · A2A · ADK) and Module 06 (Voice Agents)** remain untaught.
+
+**Possible side-project thread, if the learner wants it:** the real test of Certification
+Trainer as a *generic* tool is a second certification — a different one, with no answer key
+in `reference/` and an unknown guide format. Not urgent, no credit for it now, but that is
+the run that would prove goal 1 rather than assume it.
+
+## Session log — 2026-09-18: the pipeline works, and it is provable
+
+**Certification Trainer produced a complete, verifiable course for $28.09.** Run 1 cost
+$53.68 and its quality claims could not be checked at all. The difference is the work of
+the 17th and 18th.
+
+| | Run 1 (15 Sept) | Run 2 (18 Sept) |
+|---|---|---|
+| Cost | $53.68 | **$28.09** |
+| Concepts | 115 | **186** |
+| Course | 6 modules, ~3,880 lines | **10 modules, 5,512 lines** |
+| Coverage | unverifiable | **240/240 bullet IDs, exact set match** |
+| Verdict files | 0 | **11** |
+| Rework cause | source-tier labels | **citation faithfulness** |
+
+**The coverage claim was verified, not trusted:** every one of the 240 bullet IDs in
+`domain-map.md` appears in `course-outline.md`, with zero missing and zero invented. That
+is the direct answer to the question the learner could not answer on the 16th.
+
+**The strongest single result is what the reworks were about.** All three researcher
+reworks in run 2 were **citation-faithfulness failures** — a prerequisite mis-attributed,
+a concept whose cited source did not support it, two attributions "not faithful to the
+source they cite". That is Module 03's *silent blending* being caught mechanically, three
+times, by a machine. In the previous run the rework was "you labelled the source tier
+wrong". **The learner's challenge to the tier design is what moved the evaluator's
+attention from bookkeeping to substance** — of everything changed across two days, that
+fix has the clearest evidence behind it.
+
+**Four challenges from the learner, all correct, all acted on:**
+1. **"Isn't the integrity check overkill?"** (17th) — it was. Built, then cut. Git history
+   already records tampering after the fact at no runtime cost, and the check put the most
+   complex procedure in the file into the one component whose rules nothing enforces.
+2. **"Why is Claude product documentation tier 2?"** (18th) — the four-tier precedence put
+   the exam guide above the vendor's own docs, so "prefer the highest tier" told researchers
+   to prefer a syllabus line over the documentation that defines the thing. Collapsed to
+   official / non-official, unranked.
+3. **"Why staged?"** (18th) — the three-stage plan was calibrated to price uncertainty that
+   no longer existed. Collapsed to one session with a single pause, kept only because
+   `domain-mapper`'s output format had changed and five researchers would inherit any
+   breakage. The pause then did exactly that job: 240 IDs, all lists numbered 1..n, no gaps.
+4. **"The orchestrator talks about 'my' work — is it doing the work?"** (18th) — it was not.
+   Every quoted line mapped to an explicit orchestrator duty, three of them added that same
+   afternoon. **The test that settles it: counting is not producing.** The line is
+   authorship, not activity. Verified from the diff that the rework changed only summary
+   counts — not one bullet, not one ID.
+
+**Four defects the two-domain run exposed, fixed and pushed** (`c67575e`): source tiers
+collapsed; bullet IDs moved from the orchestrator's dispatch prompts into `domain-mapper`'s
+own output, where they cannot vanish with a session; dispatch slices moved from the
+scratchpad into the repo so verdicts cite inputs that survive; researcher self-reported
+counts now checked against the file.
+
+**Decision worth keeping: restart clean rather than finish the hybrid.** Session A had two
+domains under the old spec; finishing would have produced a course and no clean answer to
+"does the pipeline on `main` produce this?". The $10.21 already spent was tuition, not
+waste. Goal 1 made the call obvious.
+
+**Budget note:** the run crossed into overage mid-flight (`isUsingOverage: true`, 5-hour
+window `rejected`) and completed straight through it, because the prompt told the
+orchestrator that rate-limit warnings are the credit handover working as designed, not a
+reason to stop. Without that line it would probably have halted itself.
+
+**Not verified, and the learner is doing it:** coverage is not quality. Every bullet has a
+lesson and the citations survived scrutiny, but whether the course *teaches well* needs a
+human reading a lesson.
 
 ## Next step
 
