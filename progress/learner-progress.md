@@ -7,7 +7,7 @@
 - Name: [unset]
 - Preferred learning style: Socratic
 - Started: 2026-09-04
-- Last session: 2026-09-15
+- Last session: 2026-09-20
 - Learner-stated accommodation: has trouble retaining precise vocabulary / exact file paths
   (e.g. `.claude/agents/<name>.md` vs `CLAUDE.md` mixed up twice across two sessions).
   Conceptual reasoning is consistently strong — the gap is specifically exact names/locations.
@@ -35,7 +35,7 @@
 | 01 — Agents, ReAct & the Harness | completed | Quiz 4/4 + both exercises done. Recurring pattern to watch: folds "observation" into surrounding actions instead of naming it explicitly (showed up in quiz Q2 and again in Exercise 2 loop trace); also initially conflated "this sub-step is done" with "the whole task is done" (domain-listing ≠ finished; one domain passing its checklist ≠ overall stop_reason) — self-corrected once flagged both times. Strong grasp of agent def, loop, arch levels, ReAct, harness, and defining "good enough" as an explicit checklist rather than a vibe. |
 | 02 — Skills, Subagents & Multi-Agent Orchestration | completed | All 7 concepts taught + fresh non-reused quiz (5/5, all correct on substance, no retries needed — confidence concern from session 1 resolved) + both exercises done via the "Teacher Claude" project (agent-team design incl. self-caught parallelization opportunity within the researcher role; wrote a real `.claude/agents/domain-researcher.md` file, iterated twice on feedback, then independently caught and removed its own prompt-drift risk in the final review). Also independently generalized "prompt vs. tool access" as two separate layers (harness/permissions vs. system prompt text) beyond what the lesson states. |
 | 03 — Agentic RAG, Semantic Cache & Knowledge Graphs | completed | Lesson + quiz done. Quiz retaken fresh in this session: 5/5, correct on first attempt for every question, no hints needed (agentic routing incl. "whether not just where" to retrieve; time-sensitivity guard bypasses cache regardless of similarity; KG/Text-to-Cypher for precise count/relationship queries vs. vector RAG for fuzzy semantic match; grounding+citations as the structural version of Module 01's "never guess, document only"; LLM-as-judge scores both answers on explicit criteria rather than trusting whichever responded first). Note: a separate claude.ai work-computer session reportedly covered this module too, but its state was never visible here — this session's record (quiz retaken + Exercise 1 done fresh) is the verified one going forward. Exercise 1 (semantic cache design for Teacher Claude) **completed in this session**, including the optional stretch question: 3 labeled example queries (fundamentals=cacheable, current model list=live, ReAct definition=cacheable); generalized the time-sensitivity rule *unprompted* to be topic-based rather than pure-keyword-based (correctly noted a user might ask about model support without saying "current" — the guard has to flag by subject category, not just wording — a genuinely strong extension beyond the lesson); justified biasing toward false-cache-miss over false-cache-hit for an exam-prep tool (asymmetric cost: stale-wrong knowledge risks the exam, extra latency doesn't); on the stretch (does a reworked domain's old cache entry survive?), correctly split false vs. incomplete rather than treating all evaluator-rejections the same — needed one nudge to see that *any* rework verdict should pull the entry from serving live traffic immediately, with the false/incomplete distinction mattering more for whether it's kept as a fallback than for whether it stays live. Exercise 2 (vector RAG vs. knowledge graph) also **completed with its stretch**: correct backend calls for both queries with sound justification; named the `PREREQUISITE_OF` edge and recognised direction matters; on the stretch, correctly identified that a single vector search can't chain a retrieved fact into a second lookup. **Notable:** pushed back hard on my overclaim that vector search "could never" answer a multi-hop query — correctly argued a chunk *could* contain the full chain, forcing a more precise formulation (retrieval returns existing text and never derives new facts; pre-computing every transitive closure doesn't scale). Excellent critical-thinking signal — did not accept an authoritative-sounding but sloppy claim. Gap surfaced and filled: had no recall of Concept 3 (chunking/embedding) and said so rather than bluffing — re-taught briefly, then applied it correctly (chunk lesson.md by concept) and independently asked why one would ever *not* embed a chunk, which opened the answer-key-exclusion point. Also asked two good unprompted questions: whether vector search and KG are both just RAG with different data structures (yes — umbrella vs. backends), and how KGs are physically stored (answered from general knowledge, flagged as beyond the kit's content). |
-| 04 — Evaluation & Guardrails | in progress | **Concepts 1, 2, 3, 6, 7 landed well. Concepts 4 (retrieval metrics) and 5 (generation metrics) did NOT — re-teach them from scratch.** See the session log below: Claude skipped 4 and 5 entirely, taught 3 without naming its metrics, then quizzed on all three. The learner caught it twice, correctly. Quiz abandoned after Q2; do not count it. |
+| 04 — Evaluation & Guardrails | in progress | Concepts 1, 2, 3, 6, 7 landed (2026-09-16). **Concepts 4 and 5 re-taught 2026-09-20 — partially landed.** What the learner now has solidly: the two-job split (Job 1 = did it find the right pages → Concept 4; Job 2 = did it tell the truth about them → Concept 5), and why recall needs ground truth (they derived unprompted that the evaluator would need "a list of all sources that were supposed to be used"). **Still thin: MRR, Answer Relevance, Context Utilisation** — named in a recap, never worked. Two errors made and corrected: mapped recall to "using the source incorrectly" (both precision and recall are retrieval); called the "zero invented" coverage check faithfulness (it is set-membership, script-checkable). Quiz still not run for this module. |
 | 05 — Multi-Agent Systems (MCP · A2A · ADK) | not started | |
 | 06 — Voice Agents | not started | |
 
@@ -115,9 +115,10 @@ thread; it closed.
 it *teaches* rather than recites. Coverage and citation faithfulness are verified; pedagogy
 is not, and counts cannot settle it.
 
-**The live teaching thread: Module 04 Concepts 4 and 5** — retrieval metrics (Precision@K,
-Recall@K, MRR) and generation metrics (faithfulness, answer relevance, context utilisation).
-Still not learned; see the 2026-09-16 log for why the first attempt failed.
+**The live teaching thread: Module 04 Concepts 4 and 5 — re-taught 2026-09-20, finish the
+remaining metrics.** The Job 1 / Job 2 split landed. Outstanding: **MRR**, **Answer Relevance**,
+**Context Utilisation**, then the quiz (never run for this module). Teach these the way the end
+of the 2026-09-20 session worked: explain plainly first, check after. Not a chain of questions.
 
 **And now there is finally a concrete anchor for them.** Two runs of the same certification
 exist, with eleven verdict files between them:
@@ -140,6 +141,64 @@ the run that would prove goal 1 rather than assume it.
 ## Session logs
 
 Newest first.
+
+## Session log — 2026-09-20: a stale file, and a teaching method that backfired
+
+**1. The session opened on a stale progress file, and the learner had to correct it.** The
+checkout was four commits behind `origin/claude/sharp-sagan-gtayfl` — the logs for 2026-09-16,
+-17 and -18 existed on the remote and had never been pulled. Claude greeted the learner asking
+how the *first* run went, when two runs had happened and Module 04 was already underway. The
+learner's reply: "we've been through this already, run 2 went well, we reviewed it together, and
+we started module 4." **Fix applied: `git fetch` + fast-forward before reading the file. Do this
+at the start of every session** — the file is only the source of truth if it is the current file.
+This is the second time a lost or unseen session state has cost the learner time.
+
+**2. Concepts 4 and 5 were re-taught, and the first two-thirds of the attempt failed.** Claude
+ran a chain of Socratic questions where the answer to the final one had already been stated in
+the setup. The learner: "I don't understand your question", then "I don't understand your
+questions and your answers. I give up: give me the answer and try to explain it simply without
+mysterious sentences." **They were right.** What worked immediately afterwards was dropping the
+questioning entirely and stating the mechanism:
+
+> The researcher does two jobs. Job 1: go find pages. Job 2: read them and write the concepts.
+> Concept 4 measures Job 1 (Precision@K, Recall@K, MRR). Concept 5 measures Job 2
+> (Faithfulness, Answer Relevance, Context Utilisation).
+> **Concept 4 = did it find the right pages? Concept 5 = did it tell the truth about them?**
+
+**Method note, and it generalises beyond this module.** Socratic is the recorded preference, but
+it fails on material the learner has never been taught. Questions are for *retrieving* and
+*extending* something known; they cannot deliver a definition. Concepts 4 and 5 were new
+vocabulary for a system with no vector store — the same diagnosis as 2026-09-16, and Claude
+repeated the mistake in a different costume. **For genuinely new abstract material: explain
+plainly first, then check. Save the questions for after the ground is solid.** Also: never ask a
+question whose answer appears in the preceding paragraph — it reads as a trick and destroys trust
+in the question.
+
+**3. What the learner got right, unprompted.** Given "the researcher missed a good official page
+and used a weaker one instead — what would the evaluator need to catch that?", they worked to the
+answer under their own steam: examining the sources that *were* cited can never reveal one that
+was never opened, so the evaluator needs "a list of all sources that were supposed to be used" to
+compare against. That is ground truth, re-derived at the retrieval layer — the same concept they
+derived unprompted on 2026-09-16. The reasoning is solid; it is the vocabulary that is not.
+
+**4. Two errors worth re-checking later (not now).**
+- Mapped recall onto "failure to use the source correctly". Both precision and recall are
+  *retrieval* metrics — two ways of being wrong about which documents you pulled. Misuse is
+  faithfulness.
+- Called the coverage check's "zero invented" direction faithfulness. It is set membership — an
+  ID either is in the exam guide or it is not, and `comm` can decide it. Faithfulness needs
+  someone to read two texts and judge whether one supports the other.
+
+**5. The anchor material is now local and it is good.** `TarikJID/certification-trainer` branch
+`claude/confident-davinci-5nplxt` is cloned at `/home/user/tarikjid/certification-trainer`; all
+11 verdict files are in `runs/claude-certified-architect-foundations/evaluations/`. The
+tool-design round-1 verdict is the best single teaching object in the repo: the researcher
+invented a quote *and* a "40% decrease in task completion time" statistic, attributed both to a
+real, official, on-topic Anthropic page; the evaluator fetched that page twice, full-text
+searched for "40%", "task completion time", "tool-testing agent" and the quote, found none of it,
+and returned REWORK. Round 2 shows the corrected text quoting the page verbatim. Same concept,
+same URL, honest version and dishonest version side by side. **Use round-1 vs round-2 of that
+file for any future faithfulness teaching.**
 
 ## Session log — 2026-09-18: the pipeline works, and it is provable
 
