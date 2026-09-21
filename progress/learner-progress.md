@@ -7,7 +7,7 @@
 - Name: [unset]
 - Preferred learning style: Socratic
 - Started: 2026-09-04
-- Last session: 2026-09-20
+- Last session: 2026-09-21
 - Learner-stated accommodation: has trouble retaining precise vocabulary / exact file paths
   (e.g. `.claude/agents/<name>.md` vs `CLAUDE.md` mixed up twice across two sessions).
   Conceptual reasoning is consistently strong — the gap is specifically exact names/locations.
@@ -35,7 +35,7 @@
 | 01 — Agents, ReAct & the Harness | completed | Quiz 4/4 + both exercises done. Recurring pattern to watch: folds "observation" into surrounding actions instead of naming it explicitly (showed up in quiz Q2 and again in Exercise 2 loop trace); also initially conflated "this sub-step is done" with "the whole task is done" (domain-listing ≠ finished; one domain passing its checklist ≠ overall stop_reason) — self-corrected once flagged both times. Strong grasp of agent def, loop, arch levels, ReAct, harness, and defining "good enough" as an explicit checklist rather than a vibe. |
 | 02 — Skills, Subagents & Multi-Agent Orchestration | completed | All 7 concepts taught + fresh non-reused quiz (5/5, all correct on substance, no retries needed — confidence concern from session 1 resolved) + both exercises done via the "Teacher Claude" project (agent-team design incl. self-caught parallelization opportunity within the researcher role; wrote a real `.claude/agents/domain-researcher.md` file, iterated twice on feedback, then independently caught and removed its own prompt-drift risk in the final review). Also independently generalized "prompt vs. tool access" as two separate layers (harness/permissions vs. system prompt text) beyond what the lesson states. |
 | 03 — Agentic RAG, Semantic Cache & Knowledge Graphs | completed | Lesson + quiz done. Quiz retaken fresh in this session: 5/5, correct on first attempt for every question, no hints needed (agentic routing incl. "whether not just where" to retrieve; time-sensitivity guard bypasses cache regardless of similarity; KG/Text-to-Cypher for precise count/relationship queries vs. vector RAG for fuzzy semantic match; grounding+citations as the structural version of Module 01's "never guess, document only"; LLM-as-judge scores both answers on explicit criteria rather than trusting whichever responded first). Note: a separate claude.ai work-computer session reportedly covered this module too, but its state was never visible here — this session's record (quiz retaken + Exercise 1 done fresh) is the verified one going forward. Exercise 1 (semantic cache design for Teacher Claude) **completed in this session**, including the optional stretch question: 3 labeled example queries (fundamentals=cacheable, current model list=live, ReAct definition=cacheable); generalized the time-sensitivity rule *unprompted* to be topic-based rather than pure-keyword-based (correctly noted a user might ask about model support without saying "current" — the guard has to flag by subject category, not just wording — a genuinely strong extension beyond the lesson); justified biasing toward false-cache-miss over false-cache-hit for an exam-prep tool (asymmetric cost: stale-wrong knowledge risks the exam, extra latency doesn't); on the stretch (does a reworked domain's old cache entry survive?), correctly split false vs. incomplete rather than treating all evaluator-rejections the same — needed one nudge to see that *any* rework verdict should pull the entry from serving live traffic immediately, with the false/incomplete distinction mattering more for whether it's kept as a fallback than for whether it stays live. Exercise 2 (vector RAG vs. knowledge graph) also **completed with its stretch**: correct backend calls for both queries with sound justification; named the `PREREQUISITE_OF` edge and recognised direction matters; on the stretch, correctly identified that a single vector search can't chain a retrieved fact into a second lookup. **Notable:** pushed back hard on my overclaim that vector search "could never" answer a multi-hop query — correctly argued a chunk *could* contain the full chain, forcing a more precise formulation (retrieval returns existing text and never derives new facts; pre-computing every transitive closure doesn't scale). Excellent critical-thinking signal — did not accept an authoritative-sounding but sloppy claim. Gap surfaced and filled: had no recall of Concept 3 (chunking/embedding) and said so rather than bluffing — re-taught briefly, then applied it correctly (chunk lesson.md by concept) and independently asked why one would ever *not* embed a chunk, which opened the answer-key-exclusion point. Also asked two good unprompted questions: whether vector search and KG are both just RAG with different data structures (yes — umbrella vs. backends), and how KGs are physically stored (answered from general knowledge, flagged as beyond the kit's content). |
-| 04 — Evaluation & Guardrails | completed | All seven concepts taught. MRR, Answer Relevance and Context Utilisation were delivered plainly on 2026-09-20 after the learner asked for them before the quiz. **Fresh quiz (not the abandoned one, and not reusing quiz.md Q1–Q5): 5/5**, with one hint on Q2 and one retry on Q5(b). Standout: on faithfulness-vs-relevance the learner went past the lesson unprompted — a misnamed metric routes to the wrong remediation (re-source vs re-scope), and under a retry cap of 2 that wastes a round on a problem you do not have. Also declined to call Precision@8 = 0.75 a failure because no threshold had been defined — the same "no standard to fail against" instinct logged on 2026-09-16, now deliberate. Residual: metric *names* are not yet automatic (reached for trajectory when the answer was precision; needed a second pass on input-side vs output-side guarding). Concepts are solid; vocabulary needs reps. |
+| 04 — Evaluation & Guardrails | completed (+ both exercises, 2026-09-21) | All seven concepts taught. MRR, Answer Relevance and Context Utilisation were delivered plainly on 2026-09-20 after the learner asked for them before the quiz. **Fresh quiz (not the abandoned one, and not reusing quiz.md Q1–Q5): 5/5**, with one hint on Q2 and one retry on Q5(b). Standout: on faithfulness-vs-relevance the learner went past the lesson unprompted — a misnamed metric routes to the wrong remediation (re-source vs re-scope), and under a retry cap of 2 that wastes a round on a problem you do not have. Also declined to call Precision@8 = 0.75 a failure because no threshold had been defined — the same "no standard to fail against" instinct logged on 2026-09-16, now deliberate. Residual: metric *names* are not yet automatic (reached for trajectory when the answer was precision; needed a second pass on input-side vs output-side guarding). Concepts are solid; vocabulary needs reps. |
 | 05 — Multi-Agent Systems (MCP · A2A · ADK) | not started | |
 | 06 — Voice Agents | not started | |
 
@@ -115,14 +115,21 @@ thread; it closed.
 it *teaches* rather than recites. Coverage and citation faithfulness are verified; pedagogy
 is not, and counts cannot settle it.
 
-**Module 04 is complete** (2026-09-20: all seven concepts, fresh quiz 5/5). Module 04's
-exercises have not been run — `modules/Module_4_AI_Evaluation/study-material/exercises.md` and
-`AI_Eval_Metrics.ipynb` are both untouched, and the notebook has real numbers that would give the
-metric names the repetition they still need.
+**Module 04 is fully complete** — all seven concepts, quiz 5/5 (2026-09-20), and both
+exercises done 2026-09-21. `AI_Eval_Metrics.ipynb` remains untouched; it is optional now that the
+metrics have been exercised against real run data, but its real numbers would still be good
+repetition if the vocabulary slips again.
 
-**Next module: 05 — Multi-Agent Systems (MCP · A2A · ADK).** Note the learner already has
-hands-on MCP exposure through Certification Trainer, so this should connect to something real
-rather than start cold.
+**Open and the learner's to decide: the GUARDRAILS PR.**
+https://github.com/TarikJID/certification-trainer/pull/1 — branch `docs/guardrails`, not yet
+merged. The learner has never merged anything in git, so the PR route was chosen deliberately
+(click Files changed, then Merge pull request). **Ask whether it was merged at the start of the
+next session**, and note that merging moves `main` past the pipeline version that produced the
+verified 240/240 run.
+
+**Next module: 05 — Multi-Agent Systems (MCP · A2A · ADK).** The learner already has hands-on
+MCP exposure through Certification Trainer, so this should connect to something real rather than
+start cold.
 
 **And now there is finally a concrete anchor for them.** Two runs of the same certification
 exist, with eleven verdict files between them:
@@ -145,6 +152,76 @@ the run that would prove goal 1 rather than assume it.
 ## Session logs
 
 Newest first.
+
+## Session log — 2026-09-21: both Module 04 exercises, and a real defect found
+
+**Exercise 1 — an eval plan for Certification Trainer.** All four steps plus the reasoning
+behind them:
+- **Layers.** All five present, but only 3/4/5 are *actionable*. The test that settled it: if
+  this layer scored badly, what would I change? Layer 1 fails → nothing in the repo moves that
+  number, the only lever is a different model. Layers 1–2 are bought from Anthropic, not built.
+- **Researcher stage.** Outcome = hallucination rate (measurable today from archived sources).
+  Trajectory = Observation Utilization, which needs a `Fetched:` log that does not exist.
+- **Retrieval metrics.** Precision applies, given a definition of "relevant" — and the learner
+  noted unprompted that if "relevant" collapses to "got cited", precision and Observation
+  Utilization become the same number. Recall is impossible: the web is not enumerable. MRR is
+  computable but predicts nothing without a cutoff.
+- **First to instrument: hallucination rate**, on severity. *"Hallucinations threaten the course's
+  correctness, unused pages just cost tokens."*
+
+**Two corrections of mine, both forced by a precise question from the learner.**
+1. *"Reading a `.md` another agent produced isn't covered by RAG?"* — my stated reason
+   ("`course-builder` has no web tools") was wrong. The web is not what makes something layer 3.
+   **The real rule: layer 3 exists wherever there is a selection step that can select wrongly.**
+   `course-builder` is handed N files and uses all N — no query, no candidate pool, no ranking,
+   so there is no K for Precision@K to range over.
+2. *"What is the full list exactly?"* — I had said the researcher sees titles **and snippets**.
+   It sees titles and URLs only. Verified by running a real `WebSearch` rather than describing it.
+
+**That second check surfaced a live defect in the pipeline.** `WebSearch` returns a synthesised
+summary alongside the result list. A researcher can write a concept from that summary and cite a
+URL it never opened — output indistinguishable from properly sourced work, and the same shape as
+run 2's three citation-faithfulness reworks. Confirmed nothing records it:
+`grep -c "Searched:" research/*.md` returns 0 across all five files.
+
+**Exercise 2 — GUARDRAILS.md, shipped as a PR.** Four policies, each labelled input/output/both,
+assigned to one of four mechanisms (tool scope / runtime guardrail / evaluator checklist /
+prompt), and marked block / request / measure. Learner chose to scope it to the whole product
+rather than the pipeline alone. Notable:
+- Two of the four policies they proposed were **tutor** behaviours, not pipeline ones — which
+  forced the scope decision explicitly rather than by accident.
+- Policy 4 (never quiz on untaught material) has a build-time home: `course-builder` writes the
+  quizzes, so the defect is created before the tutor ever sees it. Verified its checklist has no
+  such item today.
+- Policy 3 (never abandon a concept that hasn't landed) has **no structural backstop at all** —
+  no capability to withhold, no classifier with enough history, nothing decidable from the files.
+  That is the stretch answer and it is stated plainly in the file rather than papered over.
+- The PR also installs the two cheap ones: a quiz-coverage checklist item on `course-builder`,
+  and a `Fetched:` requirement on `domain-researcher`.
+
+**Identity collision, avoided in real time and worth reusing as a teaching moment.** The
+`add_repo` clone instructions told me to call `register_repo_root` so certification-trainer's
+`CLAUDE.md` would load into this session. That file is the **orchestrator**; this session is the
+**tutor**. Registering it would have put both identities in one context — precisely what sent the
+pipeline run to its own session on 15 Sept. Skipped deliberately, and explained to the learner at
+the time. **The tooling's default advice was the wrong call here**, which is a better instance of
+the lesson than any hypothetical.
+
+**Process notes.**
+- The learner twice asked for **less text** ("that's way too much text", "no no"). Both times they
+  were right; the fix that worked was answering the literal question in four lines and stopping.
+  Long structured answers are welcome when they *asked* for a recap; they are not welcome as the
+  default reply to a narrow question.
+- Several clarification requests came from **overloaded words** — "placement", "each of the four"
+  (four policies vs. four mechanisms), "input/output" reused across two different steps. Name
+  things distinctly the first time rather than relying on context to disambiguate.
+- The learner **does not know git** and has never merged anything. Hence the PR route, chosen so
+  the merge is two clicks and the diff is visible. Do not assume git fluency in future sessions.
+
+**Blueprint:** restructured at the learner's request — cards stacking three or four levels of
+information were split one-idea-per-card ("Outcome vs. trajectory" → two cards; "guardrail vs.
+evaluation" → two cards; the six-metric list trimmed to a name list). Four new cards and three
+field notes from today. Now at v19.
 
 ## Session log — 2026-09-20: a stale file, and a teaching method that backfired
 
