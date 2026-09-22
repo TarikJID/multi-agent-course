@@ -7,7 +7,7 @@
 - Name: [unset]
 - Preferred learning style: Socratic
 - Started: 2026-09-04
-- Last session: 2026-09-21
+- Last session: 2026-09-22
 - Learner-stated accommodation: has trouble retaining precise vocabulary / exact file paths
   (e.g. `.claude/agents/<name>.md` vs `CLAUDE.md` mixed up twice across two sessions).
   Conceptual reasoning is consistently strong — the gap is specifically exact names/locations.
@@ -94,9 +94,16 @@ Status values: not started · in progress · completed · needs review
   learner of their own "prompt layer vs. tool layer" insight failing in the other direction.
 - **Milestone ACHIEVED 2026-09-18.** After that, a separate **tutor agent** (decided this session to keep teaching separate
   from building — the tutor is a separate entry point, not a 7th pipeline step).
-- **Claude: keep using this project as the concrete example for module exercises, and
-  proactively push toward that first real run** — it's the agreed milestone and everything is
-  now in place for it.
+- **Claude: keep using this project as the concrete example for module exercises.** The first
+  real run is long done; the live milestone now is the tutor's first real teaching session.
+- **The tutor exists as of 2026-09-22.** `tutor-template/` in the pipeline repo — `CLAUDE.md`,
+  five skills (`teach-module`, `quiz-me`, **`drill`**, `explain-eli5`, `build-along`), `/start`
+  and `/progress`, and a progress-file format tracking `recall` and `application` separately.
+  `drill` is new, not copied from the bootcamp: fast cold checks on `recall: shaky` items only,
+  and forbidden from touching anything closed.
+- **Three repos now:** `multi-agent-course` (the bootcamp), `certification-trainer` (the
+  pipeline), `claude-certified-architect-foundations` (public — the course it produced, with its
+  audit trail and now the tutor).
 - **Project purpose (decided 2026-09-17): Certification Trainer is a GENERIC tool.** It must
   work on any certification. Learning agent engineering is why it is being built this way;
   the CCAR-F course is a by-product, not the objective. Nothing certification-specific goes
@@ -120,12 +127,19 @@ exercises done 2026-09-21. `AI_Eval_Metrics.ipynb` remains untouched; it is opti
 metrics have been exercised against real run data, but its real numbers would still be good
 repetition if the vocabulary slips again.
 
-**Open and the learner's to decide: the GUARDRAILS PR.**
-https://github.com/TarikJID/certification-trainer/pull/1 — branch `docs/guardrails`, not yet
-merged. The learner has never merged anything in git, so the PR route was chosen deliberately
-(click Files changed, then Merge pull request). **Ask whether it was merged at the start of the
-next session**, and note that merging moves `main` past the pipeline version that produced the
-verified 240/240 run.
+**The live thread: the learner is starting a course with the tutor.** They ended 2026-09-22
+saying "I'll try starting a course" — meaning a session rooted at
+`TarikJID/claude-certified-architect-foundations`, opening
+`courses/claude-certified-architect-foundations/` and running `/start`.
+
+**Ask how that went at the start of the next session.** What to ask for, specifically:
+- Did `/start` work — did it read `course-outline.md` and set up a profile?
+- Did the progress file's **concept tracker** actually get written, or did the tutor revert to
+  prose notes? That is the format's first contact with a real session.
+- Did `drill` fire? (It only fires once something is `recall: shaky`, so probably not on session 1.)
+- Did it ever hand over a quiz answer without logging the attempt first?
+
+The structure is tested; the behaviour is not. That run is the test.
 
 **Next module: 05 — Multi-Agent Systems (MCP · A2A · ADK).** The learner already has hands-on
 MCP exposure through Certification Trainer, so this should connect to something real rather than
@@ -152,6 +166,81 @@ the run that would prove goal 1 rather than assume it.
 ## Session logs
 
 Newest first.
+
+## Session log — 2026-09-22: the tutor, built and tested
+
+No module taught. Product work, plus one piece of course archaeology.
+
+**1. Why our module list differs from the upstream course — answered from the git history.**
+The learner asked. Upstream commit `0334cd5`, 4 Sept 2026: *"Cohort 2026-03: rename modules to the
+new 7-week outline. Previous cohort preserved on branch `2026-02`."* The rename list in that commit
+is literally our module names, so **ours are the originals** — this repo's first commit is 25 June
+and it froze the pre-rename structure. Two consequences worth remembering:
+- **Evaluation was demoted, not promoted.** `Module_4_AI_Evaluation` *was* a module; upstream folded
+  it into `Module_3_.../Evaluation_and_Guardrails`. We then treated it as a full module and authored
+  five teaching files, so ours is now the more developed version of that content.
+- **We are missing upstream's new Modules 6 and 7** — *Leading AI Systems Across Teams* and
+  *Demo Day* — plus a reorganised root. Upstream is still active (last commit 21 Sept). Offered to
+  look at the two new modules after 05 and 06; the learner has not taken that up.
+
+**2. Three repos now, each with a README.**
+- `certification-trainer` — README written, then revised twice on the learner's instructions: first
+  made generic (the run-history table and cost figures "don't really make sense for anyone except
+  you and me" — correct), then `Design notes` and `Guardrails` cut and the repo layout fixed. It had
+  listed `runs/` and `courses/` as repo contents; neither exists on `main`.
+- **`claude-certified-architect-foundations` — new public repo**, created this session. The run-2
+  course plus its `runs/` audit trail. Directory paths preserved exactly as generated so the path
+  citations inside the verdict files still resolve — flattening would have silently broken the audit
+  trail the repo exists to preserve.
+- `multi-agent-course` — unchanged.
+
+**3. `GUARDRAILS.md` was stale, and the learner caught it** by asking whether the agent definitions
+had actually been updated. They had. But the file still said policy 4 was `not built` and still
+listed the `Fetched:` requirement as an open gap — both had shipped in the same PR. **A policy file
+that misreports its own status is worse than none.** Fixed, and the "what is missing" table replaced
+with **"Where each policy actually lives"**, mapping every policy to the file and line enforcing it.
+Nothing in the repo reads `GUARDRAILS.md` — agents obey checklists — so that link had to be written
+down or it existed nowhere.
+
+**4. The tutor: designed, built, tested.** All three open decisions settled:
+- **Who emits it — nobody.** A static `tutor-template/` copied in by the orchestrator at step 12.
+  Nothing in it varies by certification, and the module list is not duplicated: the tutor reads
+  `course-outline.md`. Zero generation, nothing to go stale.
+- **The comprehension log — two axes, closed independently.** `recall` (can name it cold) and
+  `application` (can use it correctly). The learner insisted vocabulary matters too, which is the
+  right call *for them specifically*: their profile is strong reasoning, weak exact names, so
+  collapsing the axes would let the strong one mask the weak one. Conditions are recorded
+  (`just-taught` / `cued` / `cold`), and only **cold** closes recall — two clean cold recalls on
+  **separate days**, which is the rule this very progress file used.
+- **Answer keys — gated on a logged attempt**, with answers in their own file so they are not in
+  context during the question.
+
+**5. The verb argument, and the learner was half right.** Asked to apply the GUARDRAILS test to
+their own attempt-gating design, they said **measure**. Precisely: at the moment of answering it is
+the same model consulting its own log, which is a **request**; the record it leaves makes a leak
+detectable afterwards, which *would* be a measure — **but only once something reads the log looking
+for one, and nothing does.** Writing "measures" today would be the exact thing the file exists to
+prevent. Good instinct, and the correction is a concrete to-do rather than a quibble.
+
+**6. Testing the template found a real defect immediately.** Copied into the CCAR-F course and
+structure-checked: `quiz-answers.md found in 0 module folders (expect 10)`. `course-builder` had
+been emitting answers **inline in `quiz.md`**, inside `<details>` blocks, under a note reading *"the
+tutor must never reveal an answer before the learner attempts."* Two failures in one:
+- That note is a **prompt instruction sitting in a data file** — already failed by the time anything
+  reads it.
+- `<details>` collapses **in a browser**, not in a model's context. A tutor opening `quiz.md` to ask
+  Q1 holds every answer for that module.
+
+The whole guardrail rested on a file split the pipeline never produced. Fixed in both places: 128
+answers split out mechanically across 10 modules (questions untouched, zero leakage on re-grep), and
+`course-builder`'s spec **and checklist** updated — the checklist because a rule in prose is one the
+evaluator never sees, which is the learner's own insight from Module 02.
+
+**Teaching note.** The pattern from 2026-09-21 held all session: short answers, and clarification
+requested whenever a word was overloaded. Two of my claims were corrected by the learner asking a
+precise question rather than by review — the stale `GUARDRAILS.md` and the verb. **Their questions
+are a better defect-finder than my checking.** Keep answering them literally and at length only when
+asked.
 
 ## Session log — 2026-09-21: both Module 04 exercises, and a real defect found
 
