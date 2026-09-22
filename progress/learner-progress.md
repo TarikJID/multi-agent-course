@@ -104,6 +104,11 @@ Status values: not started · in progress · completed · needs review
 - **Three repos now:** `multi-agent-course` (the bootcamp), `certification-trainer` (the
   pipeline), `claude-certified-architect-foundations` (public — the course it produced, with its
   audit trail and now the tutor).
+- **Settled 2026-09-22, do not reopen:** `course-outline.md` stays written in the pipeline's
+  coverage vocabulary (task statements, bullet IDs). That jargon is what makes the 240/240 claim
+  checkable. **The tutor translates it** — `CLAUDE.md` requires saying "30 lessons, one per exam
+  objective" rather than repeating the guide's numbering. Rewriting the outline for readability
+  would trade a verifiable property for a problem the tutor already solves.
 - **Project purpose (decided 2026-09-17): Certification Trainer is a GENERIC tool.** It must
   work on any certification. Learning agent engineering is why it is being built this way;
   the CCAR-F course is a by-product, not the objective. Nothing certification-specific goes
