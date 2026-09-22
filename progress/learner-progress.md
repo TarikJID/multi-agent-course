@@ -132,19 +132,18 @@ exercises done 2026-09-21. `AI_Eval_Metrics.ipynb` remains untouched; it is opti
 metrics have been exercised against real run data, but its real numbers would still be good
 repetition if the vocabulary slips again.
 
-**The live thread: the learner is starting a course with the tutor.** They ended 2026-09-22
-saying "I'll try starting a course" — meaning a session rooted at
-`TarikJID/claude-certified-architect-foundations`, opening
-`courses/claude-certified-architect-foundations/` and running `/start`.
+**The live thread: the tutor's first teaching session.** The learner ran `/start` twice on
+2026-09-22 and both times stopped at the onboarding to report a defect (see the later log below).
+Both are fixed. **Nobody has yet been taught a lesson by it.**
 
-**Ask how that went at the start of the next session.** What to ask for, specifically:
-- Did `/start` work — did it read `course-outline.md` and set up a profile?
-- Did the progress file's **concept tracker** actually get written, or did the tutor revert to
-  prose notes? That is the format's first contact with a real session.
-- Did `drill` fire? (It only fires once something is `recall: shaky`, so probably not on session 1.)
-- Did it ever hand over a quiz answer without logging the attempt first?
+**Ask at the start of the next session whether they got past onboarding.** The one thing that
+still matters:
+- **Did the concept tracker actually get written?** Two axes per concept, conditions recorded —
+  or did the tutor revert to prose notes? That format has never met a real session.
+- Did `drill` fire? (Only fires once something is `recall: shaky` — so not on session 1.)
+- Did it hand over a quiz answer without logging the attempt first?
 
-The structure is tested; the behaviour is not. That run is the test.
+Everything structural is tested. The behaviour is not.
 
 **Next module: 05 — Multi-Agent Systems (MCP · A2A · ADK).** The learner already has hands-on
 MCP exposure through Certification Trainer, so this should connect to something real rather than
@@ -171,6 +170,64 @@ the run that would prove goal 1 rather than assume it.
 ## Session logs
 
 Newest first.
+
+## Session log — 2026-09-22 (later): the tutor's first runs, and four critiques
+
+The learner ran `/start` against the real course twice. Both times they stopped at onboarding to
+report something wrong. Four critiques in total today, and **every one found something structural
+rather than cosmetic.**
+
+**1. `/start` was not registered as a command.** Claude Code loads `.claude/` from the *working
+directory*, and the course sat in `courses/<cert-name>/`. Opening the repo gave a session with no
+commands. The tutor recovered by reading `.claude/commands/start.md` itself — **luck, not design**;
+nothing guaranteed it would look.
+**Fixed:** in a published single-course repo the course moves to the repo root. `courses/<cert>/`
+stays right inside the pipeline, where several courses coexist. The rule is now in
+`tutor-template/README.md` as a publishing step. `runs/` stayed put and the audit trail was not
+edited — one verdict file's output path no longer resolves, and `PROVENANCE.md` explains the
+discrepancy rather than tidying it away.
+
+**2. Exam-guide jargon leaked to the learner.** Onboarding opened with *"one lesson per exam task
+statement (1.1 through 5.6)"*. Task statements and bullet IDs are the pipeline's **coverage
+vocabulary** — they exist so IDs can be matched as a set — and they mean nothing on day one.
+**Fixed:** a hard rule in the tutor's `CLAUDE.md` plus specific `/start` guidance. Read the outline,
+then say what it means.
+**Decision recorded, do not reopen:** `course-outline.md` keeps the dialect, because that jargon is
+what makes the 240/240 claim checkable. The tutor translates.
+
+**3. Onboarding described the shape of the course, never its purpose.** Accurate domains, weights
+and module counts — and nothing telling a learner why the next few weeks were worth their time.
+**Fixed:** a step before the structure — what the certification is actually about in one line, and
+three or four concrete things they will be able to *do*, pulled from the real modules and phrased
+as actions. Plus a **Tone** section in both files: warm *and* specific, since vague encouragement
+is not warmth. Explicitly ruled out career and salary claims — outside the material, no source, and
+it reads as marketing.
+
+**4. "Who is this README written for?"** The sharpest one. The course repo's README was serving a
+learner, an assessor and a builder at once.
+**Fixed:** split. `README.md` is the learner's — how to start, what they will be able to do, how the
+material is organised, with none of the pipeline's vocabulary left in it (verified by grep).
+`PROVENANCE.md` carries how it was built and three claims each with a concrete way to check it.
+
+**Also this session, on the pipeline repo:**
+- Wrote `EVALUATION-AND-GUARDRAILS.md`. **First draft was rejected** — it explained how evaluation
+  and guardrails work before getting to what this pipeline does. The learner asked for a record of
+  measures implemented, not a lesson. Rewritten as a plain list grouped by what each control
+  protects, every entry naming the file it lives in, plus what was removed and a closing table of
+  what is **not** enforced.
+- **`GUARDRAILS.md` deleted**, folded into that file. The learner prompted it by asking whether it
+  still made sense. It did not: everything in it appeared in the new file, and *two documents
+  describing the same controls is what caused the staleness bug on the 21st.* One file can be
+  wrong; it cannot disagree with itself.
+- Both references redirected — the README layout block and the tutor template's control table.
+
+**Teaching note, and it is about me.** The learner asked for a *report* and I produced an
+*explainer*. That is the second time in two days the same reflex has cost a rewrite: yesterday it
+was Socratic questioning where an explanation was needed, today an explanation where a record was
+needed. **Check what form was actually asked for before choosing one.**
+
+**Their critiques are the best defect-finder in this project.** Four today, four structural. None
+was caught by my own review first.
 
 ## Session log — 2026-09-22: the tutor, built and tested
 
